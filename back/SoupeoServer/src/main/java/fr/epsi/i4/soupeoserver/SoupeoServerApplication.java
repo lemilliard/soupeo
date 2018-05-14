@@ -7,9 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SoupeoServerApplication {
 
 	public static String mongoDBUrl = "localhost";
+
 	public static int mongoDBPort = 27017;
 
-
+	public static String mongoDBDatabase = "soupeo";
 
 	public static void main(String[] args) {
 		SpringApplication.run(SoupeoServerApplication.class, args);
