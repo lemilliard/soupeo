@@ -16,7 +16,8 @@ else
     echo ""
     echo "Docker run : "
     echo ""
-    docker run --name soupeo-mongo --rm -p 27017:27017 -d soupeo/mongo
+    docker run -p 27017:27017 --name soupeo-mongo --rm -d soupeo/mongo
+    # docker run --name soupeo-mongo --rm -d soupeo/mongo
 
     docker exec -ti soupeo-mongo sh ./scripts/createDatabase.sh
 fi

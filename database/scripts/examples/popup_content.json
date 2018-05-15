@@ -1,0 +1,12 @@
+[
+    {
+        "id_popup": 0,
+        "title": "Vous semblez perdu...",
+        "message": "Hey, besoin d'aide ? Ou vous êtes juste teubé ?"
+    },
+    {
+        "id_popup": 1,
+        "title": "Encore vous... ?",
+        "message": "Si ça continue on va appelé les autorités compétentes !"
+    } 
+]
