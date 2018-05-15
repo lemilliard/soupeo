@@ -1,5 +1,6 @@
 package fr.epsi.i4.soupeoserver.ws;
 
+import fr.epsi.i4.soupeoserver.webcam.FaceAPIClient;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,8 +17,11 @@ public class AnalyseService {
 
 	@CrossOrigin(origins = "*")
 	@PostMapping(value = basePath)
-	public String runAnalyse(@RequestParam("image") MultipartFile image) throws Exception {
-		// image.getBytes() -> retourne l'outputStream
-		return "OK";
+	public Object runAnalyse(@RequestParam("image") MultipartFile image) throws Exception {
+		// Récupération des données sur les émotions
+		Object faceAPIResponse = FaceAPIClient.getResponse(image.getBytes());
+
+
+		return faceAPIResponse;
 	}
 }
