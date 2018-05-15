@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSSample</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+</head>
+
+<h2>Face Rectangle</h2>
+<ul id="faceRectangle">
+</ul>
+
+<h2>Emotions</h2>
+<ul id="scores">
+</ul>
+
+<body>
+
+<script type="text/javascript">
+    $(function() {
+        var params = { returnFaceAttributes: "smile,emotion" };
+        var imageUrl = "https://cdnfr2.img.sputniknews.com/images/103625/72/1036257235.jpg";
+        $.ajax({
+            
+            url: "https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect?" + $.param(params),
+            beforeSend: function(xhrObj){
+                xhrObj.setRequestHeader("Content-Type","application/json");
+
+                xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","77e9f2e419cb4caab9b67ffcf7c1d5b8");
+            },
+            type: "POST",
+            // Request body
+            data: '{"url": ' + '"' + imageUrl + '"}',
+        }).done(function(data) {
+            // Get face rectangle dimensions
+            console.log(data[0]);
+            var faceRectangle = data[0].faceRectangle;
+            var faceRectangleList = $('#faceRectangle');
+
+            // Append to DOM
+            for (var prop in faceRectangle) {
+                faceRectangleList.append("<li> " + prop + ": " + faceRectangle[prop] + "</li>");
+            }
+
+            // Get emotion confidence scores
+            var faceAttributes = data[0].faceAttributes.emotion;
+            var smile = data[0].faceAttributes.smile;
+            var scoresList = $('#scores');
+
+            // Append to DOM
+            for(var prop in faceAttributes) {
+                scoresList.append("<li> " + prop + ": " + faceAttributes[prop] + "</li>")
+            }
+            scoresList.append("<li> smile: " + smile + "</li>");
+        }).fail(function(err) {
+            alert("Error: " + JSON.stringify(err));
+        });
+    });
+</script>
+</body>
+</html>
