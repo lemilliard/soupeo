@@ -1,4 +1,4 @@
-package fr.epsi.i4.soupeoserver.webcam;
+package fr.epsi.i4.soupeoserver.faceapi;
 
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;

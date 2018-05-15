@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fr.epsi.i4.soupeoserver.decisionTree;
+package fr.epsi.i4.soupeoserver.analyzer.decisiontree;
 
 import fr.decisiontree.*;
-import fr.decisiontree.model.Result;
-import java.util.HashMap;
 
 /**
  *
@@ -18,7 +16,7 @@ public class AnalyseDecisionTree {
     private DecisionTree decisionTree;
 
     private void initDecisionTree() {
-        Config config = new Config("./decisionTree");
+        Config config = new Config("./decisiontree");
         String[] PageParams = new String[]{
             PageEnum.PORTAIL.name(),
             PageEnum.RECHERCHE_EMPLOI.name(),
