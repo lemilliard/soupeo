@@ -51,6 +51,47 @@ Stop :
         ...
     ]
     
+Exemple  :
+
+    /* 1 */
+    {
+        "_id" : ObjectId("5afae0c5051cd61c824f3f24"),
+        "id_terminal" : "adresse mac",
+        "location" : "Montpellier",
+        "start_sessoin" : ISODate("2013-11-20T23:32:18.000Z"),
+        "end_session" : ISODate("2013-11-20T23:37:18.000Z"),
+        "parcours" : [ 
+            {
+                "start" : ISODate("2013-11-20T23:32:18.000Z"),
+                "url" : "https://pole-emploi.fr",
+                "help_used" : false,
+                "end" : ISODate("2013-11-20T23:33:18.000Z")
+            }
+        ],
+        "indice_pb" : [ 
+            {
+                "level" : 0,
+                "date" : ISODate("2013-11-20T23:32:18.000Z"),
+                "cause" : "Nothing wrong"
+            }
+        ],
+        "mood" : [ 
+            {
+                "date" : ISODate("2013-11-20T23:32:18.000Z"),
+                "emotion" : {
+                    "anger" : 0,
+                    "contempt" : 0.01,
+                    "disgust" : 0,
+                    "fear" : 0,
+                    "happiness" : 0.115,
+                    "neutral" : 0.874,
+                    "sadness" : 0,
+                    "surprise" : 0
+                }
+            }
+        ]
+    }
+    
 ### Collection popup_content
     [
         {
