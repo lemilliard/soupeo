@@ -9,6 +9,9 @@ Start:
 
 
 ## Mongo
+
+### Avec Docker
+
 Start :
 
 	cd database/
@@ -19,6 +22,16 @@ Stop :
 
 	cd database/
 	sh stopMongo.sh
+	
+### Sans Docker 
+
+Pour l'installation de MongoDB, télécharger le community server, et suiver l'étape "Set up the MongoDB environment" et "Start MongoDB" sur : 
+- https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
+
+Start :
+
+	cd database/ 
+	sh scripts/createDatabase.sh
 	
 ### Morphia (liens utiles) :
 - https://dzone.com/articles/using-morphia-map-java-objects
