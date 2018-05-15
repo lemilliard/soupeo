@@ -1,17 +1,25 @@
 # Soupeo
 
+## Back
+
+Start:
+
+	cd back
+	sh run_dev.sh
+
 
 ## Mongo
 Start :
 
-    cd database/
-    sh startMongo.sh
+	cd database/
+	sh startMongo.sh
+    
 
 Stop : 
 
-    cd database/
-    sh stopMongo.sh
-
+	cd database/
+	sh stopMongo.sh
+	
 ### Morphia (liens utiles) :
 - https://dzone.com/articles/using-morphia-map-java-objects
 - https://dzone.com/articles/mongodb-30-minutes-draft
