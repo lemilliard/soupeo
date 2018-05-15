@@ -14,11 +14,12 @@ import java.util.HashMap;
  * @author kbouzan
  */
 public class AnalyseDecisionTree {
-    
-    private DecisionTree decisionTree;
 
-    private void initDecisionTree() {
-        Config config = new Config("./decisionTree");
+    private static DecisionTree decisionTree;
+    private static Config config;
+
+    private static void initDecisionTree() {
+        config = new Config("./decisionTree");
         String[] PageParams = new String[]{
             PageEnum.PORTAIL.name(),
             PageEnum.RECHERCHE_EMPLOI.name(),
@@ -42,6 +43,15 @@ public class AnalyseDecisionTree {
         config.addDecision("1");
 
         decisionTree = new DecisionTree(config);
+//config.addAttribut("PagePrecedente", "portail", "rechercheEmploi", "rechercheFormation", "monCompte", "CV");
+//		config.addAttribut("PageSuivante", "portail", "rechercheEmploi", "rechercheFormation", "monCompte", "CV");
+//		config.addAttribut("NBVisite", "0", "1", "2", "3", "4", "+5");
+//		config.addAttribut("Cam", "0 - 70", "70 - 85", "85 - 100");
+//
+//		config.addDecision("Indice0");
+//		config.addDecision("Indice1");
+//
+//		decisionTree = new DecisionTree(config);
     }
 
     public DecisionTree getDecisionTree() {
@@ -50,6 +60,30 @@ public class AnalyseDecisionTree {
 
     public void setDecisionTree(DecisionTree decisionTree) {
         this.decisionTree = decisionTree;
+    }
+
+    public static void main(String... args) {
+        initDecisionTree();
+        HashMap<String, String> values = new HashMap<>();
+        values.put("PagePrecedente", PageEnum.PORTAIL.name());
+        values.put("PageActuelle", PageEnum.RECHERCHE_EMPLOI.name());
+        values.put("NBVisite", "2");
+        values.put("Cam", String.valueOf(CamEnum.getCamEnum(76).getValue()));
+        Result decision;
+        decision = decisionTree.decide(values);
+        System.out.println(decision.getValue());
+        System.out.println(decision.getRatio());
+
+        values = new HashMap<>();
+        values.put("PagePrecedente", PageEnum.RECHERCHE_EMPLOI.name());
+        values.put("PageActuelle", PageEnum.RECHERCHE_EMPLOI.name());
+        values.put("NBVisite", "2");
+        values.put("Cam", String.valueOf(CamEnum.getCamEnum(71).getValue()));
+        decision = decisionTree.decide(values);
+        System.out.println(decision.getValue());
+        System.out.println(decision.getRatio());
+
+        decisionTree.print();
     }
 
 }

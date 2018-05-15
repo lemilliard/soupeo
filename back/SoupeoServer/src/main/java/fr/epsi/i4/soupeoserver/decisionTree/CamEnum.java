@@ -29,8 +29,9 @@ public enum CamEnum {
         int min = 0;
         int max = values.length - 1;
         int i = (min + max) / 2;
+        int av;
         while (val != values[i].value && min < max) {
-            final int av = values[i].value;
+            av = values[i].value;
             if (val < av) {
                 max = i - 1;
             } else if (val > av) {
