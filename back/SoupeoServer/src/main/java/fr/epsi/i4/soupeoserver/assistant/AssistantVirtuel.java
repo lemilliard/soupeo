@@ -5,9 +5,12 @@
  */
 package fr.epsi.i4.soupeoserver.assistant;
 
+import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.connection;
 import fr.epsi.i4.soupeoserver.mapper.Mapper;
 import fr.epsi.i4.soupeoserver.mapper.Word;
 import fr.epsi.i4.soupeoserver.mapper.WordType;
+import fr.epsi.i4.soupeoserver.model.morphia.PopupContent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,7 +42,7 @@ public class AssistantVirtuel {
         return -1;
     }
 
-    public void resultatAide(String string) {
+    public PopupContent resultatAide(String string) {
         Word page = Mapper.extractWordByType(string, WordType.PAGE);
         Word action = Mapper.extractWordByType(string, WordType.ACTION);
         Word interrogatif = Mapper.extractWordByType(string, WordType.INTERROGATION);
@@ -49,11 +52,14 @@ public class AssistantVirtuel {
             villeParam = ville.getWord();
         }
         int idPopup = resultAide(action, page);
+        PopupContent popup = null;
+        popup = connection.getDatastore().find(PopupContent.class).field("id_popup").equal(idPopup).get();
         if (interrogatif != null) {
-            // on affiche la popup qui correspond à l'id recupere
+            return popup;
         } else {
+            popup.setTitle("");
             String params = "";
-            // on redirige vers l'url en ajoutant les params s'il existe
+            String url = popup.getUrl();
             if (idPopup == 0) {
                 List<Word> emplois = Mapper.extractWordsByType(string, WordType.EMPLOI);
                 String emploisString = "";
@@ -63,63 +69,76 @@ public class AssistantVirtuel {
                         emploisString += ",";
                     }
                 }
-                params = ajoutParamsRechercheEmploi("?lieux={lieux}&motsCles={motsCles}", emploisString, villeParam);
+                params = ajoutParamsRechercheEmploi(popup.getParamUrl(), emploisString, villeParam);
+                url += params;
+                popup.setUrl(url);
             } else if (idPopup == 1) {
                 Word formation = Mapper.extractWordByType(string, WordType.FORMATION);
                 String formationParam = null;
                 if(formation != null){
                     formationParam = formation.getWord();
                 }
-                params = ajoutParamsRechercheFormation("?formationCPFPublicConcerne=Tout+public&ou=COMMUNE-{lieux}&quoi=FORMACODE-{formacode}&range=0-9&tri=0", formationParam, villeParam);
-            } else {
-                // redirection vers la page
-            }
+                params = ajoutParamsRechercheFormation(popup.getParamUrl(), formationParam, villeParam);
+                url += params;
+                popup.setUrl(url);
+            } 
+            return popup;
         }
     }
 
     public String ajoutParamsRechercheEmploi(String paramsUrl, String emploi, String ville) {
         paramsUrl = paramsUrl.replace("?", "");
-        String[] test = paramsUrl.split("&");
-        String params = "?";
-        List<String> testArray = Arrays.asList(test);
-        for (String s : testArray) {
-            if (s.contains("{lieux}")) {
+        String[] splitParams = paramsUrl.split("&");
+        List<String> params = new ArrayList<>();
+        String paramUrl = "?";
+        List<String> paramsArray = Arrays.asList(splitParams);
+        for(int i = 0; i < paramsArray.size(); i++){
+            if (paramsArray.get(i).contains("{lieux}")) {
                 if (ville != null) {
-                    s = s.replace("{lieux}", ville);
-                    params += s;
+                    params.add(paramsArray.get(i).replace("{lieux}", ville));
                 }
             }
-            if (s.contains("{motsCles}")) {
+            if (paramsArray.get(i).contains("{motsCles}")) {
                 if (emploi != null) {
-                    s = s.replace("{motsCles}", emploi);
-                    params += s;
+                    params.add(paramsArray.get(i).replace("{motsCles}", emploi));
                 }
             }
         }
-        System.out.println(params);
-        return params;
+        for(int j = 0; j < params.size(); j++){
+            paramUrl += params.get(j);
+            if(j + 1 < params.size()){
+                paramUrl += "&";
+            }
+        }
+        System.out.println(paramUrl);
+        return paramUrl;
     }
 
     public String ajoutParamsRechercheFormation(String paramsUrl, String formation, String ville) {
         paramsUrl = paramsUrl.replace("?", "");
-        String[] test = paramsUrl.split("&");
-        String params = "?";
-        List<String> testArray = Arrays.asList(test);
-        for (String s : testArray) {
-            if (s.contains("{lieux}")) {
+        String[] splitParams = paramsUrl.split("&");
+        List<String> params = new ArrayList<>();
+        String paramUrl = "?";
+        List<String> paramsArray = Arrays.asList(splitParams);
+        for(int i = 0; i < paramsArray.size(); i++){
+            if (paramsArray.get(i).contains("{lieux}")) {
                 if (ville != null) {
-                    s = s.replace("{lieux}", ville);
-                    params += s;
+                    params.add(paramsArray.get(i).replace("{lieux}", ville));
                 }
             }
-            if (s.contains("{formacode}")) {
+            if (paramsArray.get(i).contains("{formacode}")) {
                 if (formation != null) {
-                    s = s.replace("{formacode}", formation);
-                    params += s;
+                    params.add(paramsArray.get(i).replace("{formacode}", formation));
                 }
             }
         }
-        System.out.println(params);
-        return params;
+        for(int j = 0; j < params.size(); j++){
+            paramUrl += params.get(j);
+            if(j + 1 < params.size()){
+                paramUrl += "&";
+            }
+        }
+        System.out.println(paramUrl);
+        return paramUrl;
     }
 }

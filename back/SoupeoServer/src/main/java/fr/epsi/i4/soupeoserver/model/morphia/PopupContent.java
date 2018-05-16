@@ -11,6 +11,8 @@ public class PopupContent {
 	private ObjectId id_popup;
 	private String title;
 	private String message;
+        private String url;
+        private String paramUrl;
 
 	public PopupContent() {
 	}
@@ -38,4 +40,22 @@ public class PopupContent {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public String getParamUrl() {
+            return paramUrl;
+        }
+
+        public void setParamUrl(String paramUrl) {
+            this.paramUrl = paramUrl;
+        }
+        
+        
 }
