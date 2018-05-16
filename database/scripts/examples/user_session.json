@@ -9,7 +9,15 @@
                 "start": "2013-11-20T23:32:18Z",
                 "url": "https://pole-emploi.fr",
                 "help_used": false,
-                "end": "2013-11-20T23:33:18Z"
+                "end": "2013-11-20T23:33:18Z",
+                "timeSpent": 33
+            },
+            {
+                "start": "2013-11-20T23:32:18Z",
+                "url": "https://pole-emploi.fr",
+                "help_used": false,
+                "end": null,
+                "timeSpent": null
             }
         ],
         "indice_pb": [
