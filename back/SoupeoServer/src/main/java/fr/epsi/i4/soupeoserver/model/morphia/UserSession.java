@@ -1,5 +1,6 @@
 package fr.epsi.i4.soupeoserver.model.morphia;
 
+import fr.epsi.i4.soupeoserver.utils.DateUtils;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
@@ -26,6 +27,13 @@ public class UserSession {
 	private ArrayList<Mood> mood;
 
 	public UserSession() {
+	}
+
+	public UserSession(String ipAddress) {
+		this.id_terminal = ipAddress;
+		this.location = null;
+		this.start_session = DateUtils.getCurrentDate();
+		this.end_session = null;
 	}
 
 	public ObjectId get_id() {
@@ -90,6 +98,10 @@ public class UserSession {
 
 	public void setMood(ArrayList<Mood> mood) {
 		this.mood = mood;
+	}
+
+	public void end() {
+		this.end_session = DateUtils.getCurrentDate();
 	}
 
 	@Override

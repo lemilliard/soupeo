@@ -8,25 +8,25 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class WebUtils {
 
-	private HttpServletRequest request;
+	private static HttpServletRequest request;
 
-//	private static String getClientIp() {
-//
-//		String remoteAddr = "";
-//
-//		if (request != null) {
-//			remoteAddr = request.getHeader("X-FORWARDED-FOR");
-//			if (remoteAddr == null || "".equals(remoteAddr)) {
-//				remoteAddr = request.getRemoteAddr();
-//			}
-//		}
-//
-//		return remoteAddr;
-//	}
-//
-//	@Autowired
-//	public void setRequest(HttpServletRequest request) {
-//		this.request = request;
-//	}
+	public static String getClientIp() {
+
+		String remoteAddr = "";
+
+		if (request != null) {
+			remoteAddr = request.getHeader("X-FORWARDED-FOR");
+			if (remoteAddr == null || "".equals(remoteAddr)) {
+				remoteAddr = request.getRemoteAddr();
+			}
+		}
+
+		return remoteAddr;
+	}
+
+	@Autowired
+	public void setRequest(HttpServletRequest request) {
+		WebUtils.request = request;
+	}
 
 }

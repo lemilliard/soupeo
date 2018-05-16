@@ -1,10 +1,14 @@
 package fr.epsi.i4.soupeoserver.ws;
 
 import fr.epsi.i4.soupeoserver.dao.MainDAO;
-import fr.epsi.i4.soupeoserver.model.api.NewSession;
+import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
+import fr.epsi.i4.soupeoserver.utils.WebUtils;
 import org.bson.types.ObjectId;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,17 +32,22 @@ public class SessionService {
 		return MainDAO.findById(UserSession.class, id);
 	}
 
-	@PostMapping(basePath)
-	public String startSession(@RequestBody NewSession newSession) {
-		return null;
+	@GetMapping(basePath + "/start")
+	public String startSession() {
+		UserSession userSession = getUserSession();
+		userSession.end();
+		MainDAO.save(userSession);
+		ObjectId id = MainDAO.save(new UserSession(WebUtils.getClientIp())).get_id();
+		return id.toHexString();
 	}
 
-	@DeleteMapping(basePath + "/{id}")
-	public boolean endSession(@PathVariable("id") int id) {
-		// Modification en base
+	@GetMapping("/test")
+	public String getIp() {
+		System.out.println("test " + WebUtils.getClientIp());
+		return WebUtils.getClientIp();
+	}
 
-
-		// Retour du résultat
-		return true;
+	private UserSession getUserSession() {
+		return UserSessionDAO.getUserSessionByIp(WebUtils.getClientIp());
 	}
 }
