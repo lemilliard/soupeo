@@ -15,7 +15,7 @@ public class AnalyseDecisionTree {
     
     private DecisionTree decisionTree;
 
-    private void initDecisionTree() {
+    public void initDecisionTree() {
         Config config = new Config("./decisiontree");
         String[] PageParams = new String[]{
             PageEnum.PORTAIL.name(),

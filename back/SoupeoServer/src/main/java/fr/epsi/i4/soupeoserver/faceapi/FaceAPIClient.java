@@ -23,8 +23,6 @@ public class FaceAPIClient {
 
 	private static final String faceAttributes = "emotion";
 
-	private HttpClient httpClient;
-
 	public static Object getResponse(byte[] image) {
 		Object response = null;
 

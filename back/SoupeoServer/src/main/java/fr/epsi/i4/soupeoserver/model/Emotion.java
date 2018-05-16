@@ -2,6 +2,8 @@ package fr.epsi.i4.soupeoserver.model;
 
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.math.BigDecimal;
+
 /**
  * @author Thomas Kint
  */
@@ -24,5 +26,13 @@ public class Emotion {
 		Double disgust = (Double) treeMap.get("disgust");
 		Double fear = (Double) treeMap.get("fear");
 		return new Emotion(anger, disgust, fear);
+	}
+
+	public int calculateScore() {
+		BigDecimal score = new BigDecimal(anger);
+		score = score.add(new BigDecimal(disgust));
+		score = score.add(new BigDecimal(fear));
+		score = score.multiply(new BigDecimal(100));
+		return score.intValue();
 	}
 }

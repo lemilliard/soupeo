@@ -23,6 +23,7 @@ public class Analyzer {
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
 				System.out.println(emotion);
+				System.out.println(emotion.calculateScore());
 			}
 		}
 
