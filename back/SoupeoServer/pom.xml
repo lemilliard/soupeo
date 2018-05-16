@@ -66,6 +66,14 @@
             <artifactId>morphia</artifactId>
             <version>1.3.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.lemiliard</groupId>
+            <artifactId>DecisionTree</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/DecisionTree/DecisionTree-1.0-SNAPSHOT.jar</systemPath>
+        </dependency>
     </dependencies>
 
 

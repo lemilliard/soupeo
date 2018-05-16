@@ -1,15 +1,11 @@
 package fr.epsi.i4.soupeoserver.analyzer;
 
 import com.google.gson.internal.LinkedTreeMap;
-import fr.decisiontree.model.Result;
-import fr.epsi.i4.soupeoserver.SoupeoServerApplication;
-import fr.epsi.i4.soupeoserver.analyzer.decisiontree.CamEnum;
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.model.Emotion;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTree;
 
@@ -18,8 +14,33 @@ import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTre
  */
 public class Analyzer {
 
-	public static AnalyzerResult analyze(int id, byte[] image) {
+	public static AnalyzerResult analyze(int idSession, byte[] image) {
+		PageEnum pagePrecedente = getPagePrecedente();
+		PageEnum pageActuelle = getPageActuelle();
+		int nombreVisites = getNombreVisites();
+		int scoreEmotion = getEmotionScore(image);
+
+		String decision = analyseDecisionTree.analyze(pagePrecedente, pageActuelle, nombreVisites, scoreEmotion);
+
+		return AnalyzerResult.valueOf(decision);
+	}
+
+	private static PageEnum getPageActuelle() {
+		return PageEnum.PORTAIL;
+	}
+
+	private static PageEnum getPagePrecedente() {
+		return PageEnum.CV;
+	}
+
+	private static int getNombreVisites() {
+		return 2;
+	}
+
+	private static int getEmotionScore(byte[] image) {
 		Object faceAPIResponse = FaceAPIClient.getResponse(image);
+
+		int score = 0;
 
 		if (faceAPIResponse instanceof ArrayList) {
 			ArrayList<LinkedTreeMap> objectArray = (ArrayList<LinkedTreeMap>) faceAPIResponse;
@@ -29,11 +50,10 @@ public class Analyzer {
 				LinkedTreeMap emotionTreeMap = (LinkedTreeMap) faceAttributes.get("emotion");
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
-				int score = emotion.calculateScore();
-				analyseDecisionTree.analyze(PageEnum.PORTAIL, PageEnum.CV, 2, score);
+				score = emotion.calculateScore();
 			}
 		}
 
-		return AnalyzerResult.ARDUINO;
+		return score;
 	}
 }

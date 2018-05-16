@@ -1,8 +1,7 @@
 package fr.epsi.i4.soupeoserver.ws;
 
 import fr.epsi.i4.soupeoserver.dao.MainDAO;
-import fr.epsi.i4.soupeoserver.model.Session;
-import fr.epsi.i4.soupeoserver.model.Terminal;
+import fr.epsi.i4.soupeoserver.model.api.NewSession;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
@@ -30,15 +29,8 @@ public class SessionService {
 	}
 
 	@PostMapping(basePath)
-	public Session startSession(@RequestBody Terminal terminal) {
-		// Création de la session
-		Session session = new Session(terminal);
-
-		// Persistence en base
-
-
-		// Retour de la session
-		return session;
+	public String startSession(@RequestBody NewSession newSession) {
+		return null;
 	}
 
 	@DeleteMapping(basePath + "/{id}")
