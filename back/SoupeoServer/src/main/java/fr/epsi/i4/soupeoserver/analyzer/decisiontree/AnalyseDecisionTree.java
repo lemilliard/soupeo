@@ -5,49 +5,71 @@
  */
 package fr.epsi.i4.soupeoserver.analyzer.decisiontree;
 
-import fr.decisiontree.*;
+import fr.decisiontree.Config;
+import fr.decisiontree.DecisionTree;
+import fr.decisiontree.model.Result;
+
+import java.util.HashMap;
+
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ARDUINO;
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.OK;
 
 /**
- *
  * @author kbouzan
  */
 public class AnalyseDecisionTree {
-    
-    private DecisionTree decisionTree;
 
-    public void initDecisionTree() {
-        Config config = new Config("./decisiontree");
-        String[] PageParams = new String[]{
-            PageEnum.PORTAIL.name(),
-            PageEnum.RECHERCHE_EMPLOI.name(),
-            PageEnum.RECHERCHE_FORMATION.name(),
-            PageEnum.MON_COMPTE.name(),
-            PageEnum.CV.name()
-        };
+	private DecisionTree decisionTree;
 
-        String[] CamParams = new String[]{
-            String.valueOf(CamEnum.NORMAL.getValue()),
-            String.valueOf(CamEnum.ELEVE.getValue()),
-            String.valueOf(CamEnum.TRES_ELEVE.getValue())
-        };
+	public void initDecisionTree() {
+		Config config = new Config("./decisiontree");
+		String[] PageParams = new String[]{
+				PageEnum.PORTAIL.name(),
+				PageEnum.RECHERCHE_EMPLOI.name(),
+				PageEnum.RECHERCHE_FORMATION.name(),
+				PageEnum.MON_COMPTE.name(),
+				PageEnum.CV.name()
+		};
 
-        config.addAttribut("PagePrecedente", PageParams);
-        config.addAttribut("PageActuelle", PageParams);
-        config.addAttribut("NBVisite", "0", "1", "2", "3", "4");
-        config.addAttribut("Cam", CamParams);
+		String[] CamParams = new String[]{
+				String.valueOf(CamEnum.NORMAL.getValue()),
+				String.valueOf(CamEnum.ELEVE.getValue()),
+				String.valueOf(CamEnum.TRES_ELEVE.getValue())
+		};
 
-        config.addDecision("0");
-        config.addDecision("1");
+		config.addAttribut("PagePrecedente", PageParams);
+		config.addAttribut("PageActuelle", PageParams);
+		config.addAttribut("NBVisite", "0", "1", "2", "3", "4");
+		config.addAttribut("Cam", CamParams);
 
-        decisionTree = new DecisionTree(config);
-    }
+		config.addDecision(OK.name());
+		config.addDecision(ARDUINO.name());
 
-    public DecisionTree getDecisionTree() {
-        return decisionTree;
-    }
+		decisionTree = new DecisionTree(config);
+	}
 
-    public void setDecisionTree(DecisionTree decisionTree) {
-        this.decisionTree = decisionTree;
-    }
+	public DecisionTree getDecisionTree() {
+		return decisionTree;
+	}
 
+	public void setDecisionTree(DecisionTree decisionTree) {
+		this.decisionTree = decisionTree;
+	}
+
+	public String analyze(PageEnum pagePrecedente, PageEnum pageActuelle, int nbVisites, int emotionScore) {
+		HashMap<String, String> values = new HashMap<>();
+		values.put("PagePrecedente", pagePrecedente.name());
+		values.put("PageActuelle", pageActuelle.name());
+		values.put("NBVisite", String.valueOf(nbVisites));
+		values.put("Cam", String.valueOf(CamEnum.getCamEnum(emotionScore).getValue()));
+
+		Result decision;
+		decision = decisionTree.decide(values);
+		System.out.println(decision.getValue());
+		System.out.println(decision.getRatio());
+
+		decisionTree.print();
+
+		return decision.getValue();
+	}
 }

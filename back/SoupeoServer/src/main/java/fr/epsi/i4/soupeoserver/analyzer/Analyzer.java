@@ -1,11 +1,15 @@
 package fr.epsi.i4.soupeoserver.analyzer;
 
 import com.google.gson.internal.LinkedTreeMap;
+import fr.decisiontree.model.Result;
 import fr.epsi.i4.soupeoserver.SoupeoServerApplication;
+import fr.epsi.i4.soupeoserver.analyzer.decisiontree.CamEnum;
+import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.model.Emotion;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTree;
 
@@ -26,6 +30,7 @@ public class Analyzer {
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
 				int score = emotion.calculateScore();
+				analyseDecisionTree.analyze(PageEnum.PORTAIL, PageEnum.CV, 2, score);
 			}
 		}
 
