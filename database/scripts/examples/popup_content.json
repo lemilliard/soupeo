@@ -1,12 +1,25 @@
 [
     {
         "id_popup": 0,
-        "title": "Vous semblez perdu...",
-        "message": "Hey, besoin d'aide ? Ou vous êtes juste teubé ?"
+        "title": "Vous souhaitez accèder à vos comptes ?",
+        "message": "Pour cela : <ul><li>Appuyer sur le bouton tout en haut à droite de votre écran (celui qui ressemble à un personnage).</li><li>Et appuyer sur l'onglet 'Candidat'</li><li>Identifiez vous, et vous serez redirigé vers cette page : <a href=\"https://candidat.pole-emploi.fr/espacepersonnel/\">https://candidat.pole-emploi.fr/espacepersonnel/</a></li></ul>",
+        "url": "https://candidat.pole-emploi.fr/espacepersonnel/",
+        "paramUrl":null
+
     },
     {
         "id_popup": 1,
-        "title": "Encore vous... ?",
-        "message": "Si ça continue on va appelé les autorités compétentes !"
-    } 
+        "title": "Vous cherchez un emploi ?",
+        "message": "popup de redirection",
+        "url": "https://candidat.pole-emploi.fr/offres/recherche",
+        "paramUrl": "?lieux={lieux}&motsCles={motsCles}"
+    },
+    {
+        "id_popup": 2,
+        "title": "Vous cherchez une formation ?",
+        "message": "",
+        "url": "https://candidat.pole-emploi.fr/formations/recherche",
+        "paramUrl": "?formationCPFPublicConcerne=Tout+public&ou=COMMUNE-{lieux}&quoi=FORMACODE-{formacode}&range=0-9&tri=0"
+
+    }
 ]
