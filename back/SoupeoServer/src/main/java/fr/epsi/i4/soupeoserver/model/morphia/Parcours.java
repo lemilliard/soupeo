@@ -3,7 +3,7 @@ package fr.epsi.i4.soupeoserver.model.morphia;
 import org.mongodb.morphia.annotations.Embedded;
 
 @Embedded
-class Parcours {
+public class Parcours {
 
 	private String start;
 	private String url;
