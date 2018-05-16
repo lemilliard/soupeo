@@ -1,7 +1,6 @@
 package fr.epsi.i4.soupeoserver.model.morphia;
 
 import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
 
 @Embedded
 class Parcours {
@@ -10,6 +9,7 @@ class Parcours {
 	private String url;
 	private boolean help_used;
 	private String end;
+	private int timeSpent;
 
 	public Parcours() {
 	}
@@ -46,6 +46,14 @@ class Parcours {
 		this.end = end;
 	}
 
+	public int getTimeSpent() {
+		return timeSpent;
+	}
+
+	public void setTimeSpent(int timeSpent) {
+		this.timeSpent = timeSpent;
+	}
+
 	@Override
 	public String toString() {
 		return "Parcours{" +
@@ -53,6 +61,7 @@ class Parcours {
 				", url='" + url + '\'' +
 				", help_used=" + help_used +
 				", end='" + end + '\'' +
+				", timeSpent=" + timeSpent +
 				'}';
 	}
 }

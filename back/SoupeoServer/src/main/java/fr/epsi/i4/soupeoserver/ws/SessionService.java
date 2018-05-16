@@ -1,9 +1,13 @@
 package fr.epsi.i4.soupeoserver.ws;
 
-import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
+import fr.epsi.i4.soupeoserver.dao.MainDAO;
 import fr.epsi.i4.soupeoserver.model.Session;
 import fr.epsi.i4.soupeoserver.model.Terminal;
+import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Thomas Kint
@@ -13,16 +17,16 @@ public class SessionService {
 
 	private static final String basePath = "/session";
 
-	@GetMapping(basePath + "/{id}")
-	public Session getSession(@PathVariable("id") int id) {
-		// Instanciation
-		Session session = null;
-
+	@GetMapping(basePath)
+	public List<UserSession> getAllSession() {
 		// Récupération de la session en base
-		UserSessionDAO.getUserById();
+		return MainDAO.findAll(UserSession.class);
+	}
 
-		// Retour de la session
-		return session;
+	@GetMapping(basePath + "/{id}")
+	public UserSession getSession(@PathVariable("id") ObjectId id) {
+		// Récupération de la session en base
+		return MainDAO.findById(UserSession.class, id);
 	}
 
 	@PostMapping(basePath)

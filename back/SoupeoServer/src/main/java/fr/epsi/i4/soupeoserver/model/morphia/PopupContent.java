@@ -1,19 +1,25 @@
 package fr.epsi.i4.soupeoserver.model.morphia;
 
+import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+
+@Entity("popup_content")
 public class PopupContent {
 
-	private int id_popup;
+	@Id
+	private ObjectId id_popup;
 	private String title;
 	private String message;
 
 	public PopupContent() {
 	}
 
-	public int getId_popup() {
+	public ObjectId getId_popup() {
 		return id_popup;
 	}
 
-	public void setId_popup(int id_popup) {
+	public void setId_popup(ObjectId id_popup) {
 		this.id_popup = id_popup;
 	}
 
