@@ -25,11 +25,11 @@ public class AssistantVirtuel {
             case REDIRECTION:
                 switch (wordPage) {
                     case RECHERCHE_EMPLOI:
-                        return 0;
-                    case RECHERCHE_FORMATION:
                         return 1;
-                    case MON_COMPTE:
+                    case RECHERCHE_FORMATION:
                         return 2;
+                    case MON_COMPTE:
+                        return 0;
                 }
                 break;
             case CONTACTER:
@@ -54,6 +54,9 @@ public class AssistantVirtuel {
         int idPopup = resultAide(action, page);
         PopupContent popup = null;
         popup = connection.getDatastore().find(PopupContent.class).field("id_popup").equal(idPopup).get();
+        if(idPopup == 3){
+            return null;
+        }
         if (interrogatif != null) {
             return popup;
         } else {
