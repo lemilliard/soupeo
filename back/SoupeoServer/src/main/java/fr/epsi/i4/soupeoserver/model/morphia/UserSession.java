@@ -1,21 +1,28 @@
-package fr.epsi.i4.soupeoserver.model;
+package fr.epsi.i4.soupeoserver.model.morphia;
 
 import org.bson.types.ObjectId;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
 
 import java.util.ArrayList;
 
+@Entity("user_session")
 public class UserSession {
+	@Id
 	private ObjectId _id;
 	private String id_terminal;
-
 	private String location;
 	private String start_session;
 	private String end_session;
 
+	@Embedded
 	private ArrayList<Parcours> parcours;
 
+	@Embedded
 	private ArrayList<IndicePb> indice_pb;
 
+	@Embedded
 	private ArrayList<Mood> mood;
 
 	public UserSession() {
@@ -83,5 +90,19 @@ public class UserSession {
 
 	public void setMood(ArrayList<Mood> mood) {
 		this.mood = mood;
+	}
+
+	@Override
+	public String toString() {
+		return "UserSession{" +
+				"_id=" + _id +
+				", id_terminal='" + id_terminal + '\'' +
+				", location='" + location + '\'' +
+				", start_session='" + start_session + '\'' +
+				", end_session='" + end_session + '\'' +
+				", parcours=" + parcours +
+				", indice_pb=" + indice_pb +
+				", mood=" + mood +
+				'}';
 	}
 }

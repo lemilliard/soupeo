@@ -3,7 +3,6 @@ package fr.epsi.i4.soupeoserver.ws;
 import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
 import fr.epsi.i4.soupeoserver.model.Session;
 import fr.epsi.i4.soupeoserver.model.Terminal;
-import fr.epsi.i4.soupeoserver.model.UserSession;
 import org.springframework.web.bind.annotation.*;
 
 /**

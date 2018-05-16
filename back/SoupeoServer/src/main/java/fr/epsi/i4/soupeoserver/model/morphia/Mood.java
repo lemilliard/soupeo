@@ -1,4 +1,6 @@
-package fr.epsi.i4.soupeoserver.model;
+package fr.epsi.i4.soupeoserver.model.morphia;
+
+import fr.epsi.i4.soupeoserver.model.morphia.FaceAttributes;
 
 import java.util.ArrayList;
 

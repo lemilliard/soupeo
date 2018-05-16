@@ -1,4 +1,4 @@
-package fr.epsi.i4.soupeoserver.model;
+package fr.epsi.i4.soupeoserver.model.morphia;
 
 class IndicePb {
 

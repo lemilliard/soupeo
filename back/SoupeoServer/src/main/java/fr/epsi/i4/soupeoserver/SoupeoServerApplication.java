@@ -1,6 +1,7 @@
 package fr.epsi.i4.soupeoserver;
 
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.AnalyseDecisionTree;
+import fr.epsi.i4.soupeoserver.dao.Connection;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +13,8 @@ public class SoupeoServerApplication {
 	public static int mongoDBPort = 27017;
 
 	public static String mongoDBDatabase = "soupeo";
+
+	public static final Connection connection = new Connection();
 
 	public static AnalyseDecisionTree analyseDecisionTree = new AnalyseDecisionTree();
 
