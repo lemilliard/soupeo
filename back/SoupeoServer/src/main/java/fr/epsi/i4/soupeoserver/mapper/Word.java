@@ -1,5 +1,6 @@
 package fr.epsi.i4.soupeoserver.mapper;
 
+import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,92 +9,62 @@ import java.util.Arrays;
  * @author Thomas Kint
  */
 public enum Word {
-	LUMIERE("lumiere", WordType.SERVICE, new ArrayList<>(Arrays.asList(
-			"lumieres", "lampes", "eclairages"
+    PORTAIL("portail", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"portail", "portal", "pourtail", "accueil"
 	))),
-	VOLET("volet", WordType.SERVICE, new ArrayList<>(Arrays.asList(
-			"volets", "volley"
+    RECHERCHE_EMPLOI("emploi", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"emploi", "boulot", "job", "travail", "travaille"
+	))), 
+    RECHERCHE_FORMATION("formation", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"formation", "former"
 	))),
-	CHAUFFAGE("chauffage", WordType.SERVICE, new ArrayList<>(Arrays.asList(
-			"chauffages", "radiateurs"
+    MON_COMPTE("compte", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"compte", "compte personnel", "profil"
+	))), 
+    CV("cv", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"cv", "curriculum vitae", "curriculum"
 	))),
-	PREPARE("prepare", WordType.SERVICE, new ArrayList<>(Arrays.asList(
-			"prepare", "journee", "nuit", "absent", "vacance"
-	))),
-	MODE("mode", WordType.SERVICE, new ArrayList<>(Arrays.asList(
-			"mode", "disco", "relax"
-	))),
-
-	ALLUME("allume", WordType.ACTION, new ArrayList<>(Arrays.asList(
-			"allumer", "demarrer"
-	))),
-	ETEINT("eteint", WordType.ACTION, new ArrayList<>(Arrays.asList(
-			"eteint", "eteindre"
-	))),
-	DESCEND("descend", WordType.ACTION, new ArrayList<>(Arrays.asList(
-			"descendre", "fermer", "baisser"
-	))),
-	MONTE("monte", WordType.ACTION, new ArrayList<>(Arrays.asList(
-			"monter", "ouvre", "elever"
+    ASSISTANT("assistant", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"assistant", "conseiller", "conseillé"
 	))),
 
-	SALON("A", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"salon", "manger"
+	IMPRIMER("imprimer", WordType.ACTION, new ArrayList<>(Arrays.asList(
+			"imprimer", "scanner", "copier", "photocopier", "copie", "imprime", "photocopie", "scan"
 	))),
-	TOILETTES("B", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"toilettes"
+	CREER("creer", WordType.ACTION, new ArrayList<>(Arrays.asList(
+			"creer", "créé", "faire", "ajouter"
 	))),
-	CHAUFFEEAU("C", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"chauffe-eau"
+	REDIRECTION("redirection", WordType.ACTION, new ArrayList<>(Arrays.asList(
+			"accéder", "aller", "rendre", "ouvrir", "consulter", "ouvre", "accède", "retourner", "chercher", "rechercher", "recherche", "cherche"
 	))),
-	CUISINE("D", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"cuisine", "manger", "nourriture"
+	CONTACTER("contacter", WordType.ACTION, new ArrayList<>(Arrays.asList(
+			"contacter", "appeler", "appelle", "contacte"
 	))),
-	HALL("E", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"entree", "hall", "rez de chaussee", "vestibule"
+
+	INTERROGATIF("interrogatif", WordType.INTERROGATION, new ArrayList<>(Arrays.asList(
+			"comment", "quoi", "qu'est"
 	))),
-	GARAGE("F", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"garage", "voiture", "atelier", "etabli"
+	DEVELOPPEUR("developpeur", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
+			"dev", "developpeur", "developpement"
 	))),
-	COULOIR("G", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"couloir"
+	WEBMASTER("webmaster", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
+			"web", "master", "webmaster"
 	))),
-	CHAMBREENFANT("H", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"enfant", "chambre enfant", "lits superposes"
+	CHEF_PROJET("chefProjet", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
+			"chef", "projet"
 	))),
-	SALLEDEAU("I", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"salle d'eau", "douche"
+	MONTPELLIER("34172", WordType.VILLE, new ArrayList<>(Arrays.asList(
+			"montpellier"
 	))),
-	CHAMBRESIMPLE("J", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"chambre simple", "lit simple", "guitare"
+	PARIS("75", WordType.VILLE, new ArrayList<>(Arrays.asList(
+			"paris"
 	))),
-	SALLEDEBAIN("K", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"salle de bain", "baignoire"
+	MACONNERIE("22334", WordType.FORMATION, new ArrayList<>(Arrays.asList(
+			"maçon", "maçonnerie"
 	))),
-	CHAMBREPARENT("L", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"chambre parental", "chambre parents", "parents", "double", "lits doubles"
-	))),
-	BUANDERIE("M", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"lave-linge", "lave", "linge", "laver"
-	))),
-	ETAGE("N", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"etage", "bureau", "premier", "bibliothèque"
-	))),
-	JARDIN("O", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"jardin"
-	))),
-	PISCINE("P", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"piscine"
-	))),
-	TERRASSE("Q", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"veranda", "terrasse", "porche"
-	))),
-	ENTREE("R", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"porte", "porte d'entree"
-	))),
-	MAISON("S", WordType.PIECE, new ArrayList<>(Arrays.asList(
-			"maison", "tout", "toute"
-	))),;
+	JAVA("30802", WordType.FORMATION, new ArrayList<>(Arrays.asList(
+			"java"
+	)));
 
 	private String word;
 	private WordType type;
@@ -109,7 +80,7 @@ public enum Word {
 		for (Word value : values()) {
 			if (value.getType().equals(type)) {
 				for (String string : value.dictionary) {
-					if (string.contains(Normalizer.normalize(wordClef.toLowerCase(), Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", ""))) {
+					if (string.equals(Normalizer.normalize(wordClef.toLowerCase(), Normalizer.Form.NFD).replaceAll("[\u0300-\u036F]", "")) || string.equals(wordClef.toLowerCase())) {
 						return value;
 					}
 				}
