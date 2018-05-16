@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class AssistantVirtuel {
 
-    public int resultAide(Word wordAction, Word wordPage) {
+    public static int resultAide(Word wordAction, Word wordPage) {
         switch (wordAction) {
             case REDIRECTION:
                 switch (wordPage) {
@@ -42,7 +42,7 @@ public class AssistantVirtuel {
         return -1;
     }
 
-    public PopupContent resultatAide(String string) {
+    public static PopupContent resultatAide(String string) {
         Word page = Mapper.extractWordByType(string, WordType.PAGE);
         Word action = Mapper.extractWordByType(string, WordType.ACTION);
         Word interrogatif = Mapper.extractWordByType(string, WordType.INTERROGATION);
@@ -86,7 +86,7 @@ public class AssistantVirtuel {
         }
     }
 
-    public String ajoutParamsRechercheEmploi(String paramsUrl, String emploi, String ville) {
+    public static String ajoutParamsRechercheEmploi(String paramsUrl, String emploi, String ville) {
         paramsUrl = paramsUrl.replace("?", "");
         String[] splitParams = paramsUrl.split("&");
         List<String> params = new ArrayList<>();
@@ -114,7 +114,7 @@ public class AssistantVirtuel {
         return paramUrl;
     }
 
-    public String ajoutParamsRechercheFormation(String paramsUrl, String formation, String ville) {
+    public static String ajoutParamsRechercheFormation(String paramsUrl, String formation, String ville) {
         paramsUrl = paramsUrl.replace("?", "");
         String[] splitParams = paramsUrl.split("&");
         List<String> params = new ArrayList<>();
