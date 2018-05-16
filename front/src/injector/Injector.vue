@@ -1,8 +1,8 @@
 <template>
   <div class="injector">
-    <popup />
+    <popup @toggleGlow="assistantGlow = !assistantGlow" />
     <spyware />
-    <assistant />
+    <assistant :glow="assistantGlow" />
   </div>
 </template>
 
@@ -17,7 +17,8 @@ export default {
   data(){
     return{
       interval: undefined,
-      time: 0
+      time: 0,
+      assistantGlow: false
     }
   },
   components: {
@@ -34,7 +35,7 @@ export default {
       this.time++;
     },
     destroy(event){
-      console.error("eee");
+      //console.error("Envoyer la requete au serveur");
     }
   }
 };

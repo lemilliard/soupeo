@@ -28,9 +28,9 @@ $(function() {
 
         .popup{
             width: 500px;
-            height: 300px;
             font-size 24px;
             background: white;
+            padding: 50px;
         }
 
         .popupHelp{
@@ -46,6 +46,7 @@ $(function() {
         }
 
         .buttonContainer{
+            margin-top: 40px;
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -56,11 +57,44 @@ $(function() {
             transition: 1s;
             cursor: pointer;
             padding: 40px;
+            border: 2px solid rgba(0,0,0,0.2);
+            margin-right: 5px;
+            margin-left: 5px;
         }
 
         .response:hover{
             background: rgba(0,0,0,0.2);
         }
+
+        .listening{
+            animation: scale 1s linear infinite alternate;
+        }
+
+        @keyframes scale {
+            0% {
+                transform: scale(1);             
+            }
+            100% {
+                transform: scale(1.15);
+            }
+          }
+
+        .glow{
+            margin: 20px;
+            box-shadow: 0px 0px 10px 5px red;
+            animation: scaleGlow 1s linear infinite alternate;
+        }
+        
+        @keyframes scaleGlow {
+            0% {
+                transform: scale(1);             
+            }
+            100% {
+                transform: scale(1.3);
+            }
+          }
+          
+          
 
 
         </style>
