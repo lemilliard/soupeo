@@ -7,7 +7,9 @@ import fr.epsi.i4.soupeoserver.model.morphia.Parcours;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
 import fr.epsi.i4.soupeoserver.utils.DateUtils;
 import fr.epsi.i4.soupeoserver.utils.WebUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Thomas Kint
@@ -15,22 +17,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ParcoursService {
 
-    private static final String basePath = "/parcours";
+	private static final String basePath = "/parcours";
 
-    @PostMapping(basePath + "/open")
-    public String open(@RequestBody NewParcours newParcours) {
-        UserSession userSession = getCurrentSession();
-        Parcours parcours = new Parcours();
-        parcours.setUrl(newParcours.url);
-        parcours.setStart(DateUtils.getCurrentDate());
-        userSession.getParcours().add(parcours);
-        MainDAO.save(userSession);
+	@PostMapping(basePath + "/open")
+	public int open(@RequestBody NewParcours newParcours) {
+		UserSession userSession = getCurrentSession();
+		Parcours parcours = new Parcours();
+		parcours.setUrl(newParcours.url);
+		parcours.setStart(DateUtils.getCurrentDate());
+		userSession.getParcours().add(parcours);
+		MainDAO.save(userSession);
 
-        return String.valueOf(userSession.getParcours().size()-1);
-    }
+		return userSession.getParcours().size() - 1;
+	}
 
-    private UserSession getCurrentSession() {
-        return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
-    }
+	private UserSession getCurrentSession() {
+		return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
+	}
 
 }

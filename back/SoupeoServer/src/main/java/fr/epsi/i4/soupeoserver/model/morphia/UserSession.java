@@ -27,9 +27,11 @@ public class UserSession {
 	private ArrayList<Mood> mood;
 
 	public UserSession() {
+		this.parcours = new ArrayList<>();
 	}
 
 	public UserSession(String ipAddress) {
+		this.parcours = new ArrayList<>();
 		this.id_terminal = ipAddress;
 		this.location = null;
 		this.start_session = DateUtils.getCurrentDate();

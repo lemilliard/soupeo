@@ -5,7 +5,7 @@ package fr.epsi.i4.soupeoserver.model.api;
  */
 public class DataToAnalyse {
 
-	private String idSession;
+	public byte[] image;
 
-	private byte[] image;
+	public int index;
 }

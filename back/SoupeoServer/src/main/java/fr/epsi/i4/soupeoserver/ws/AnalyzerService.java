@@ -2,9 +2,11 @@ package fr.epsi.i4.soupeoserver.ws;
 
 import fr.epsi.i4.soupeoserver.analyzer.Analyzer;
 import fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult;
-import org.bson.types.ObjectId;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import fr.epsi.i4.soupeoserver.model.api.DataToAnalyse;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Thomas Kint
@@ -14,7 +16,7 @@ public class AnalyzerService {
 
 	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/analyse")
-	public AnalyzerResult runAnalyzer(@PathVariable("id") ObjectId idSession, @RequestParam("image") MultipartFile image) throws Exception {
-		return Analyzer.analyze(idSession, image.getBytes());
+	public AnalyzerResult runAnalyzer(@RequestBody DataToAnalyse dataToAnalyse) {
+		return Analyzer.analyze(dataToAnalyse.index, dataToAnalyse.image);
 	}
 }

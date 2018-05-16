@@ -4,7 +4,6 @@ import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.model.Emotion;
-import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 
@@ -15,7 +14,7 @@ import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTre
  */
 public class Analyzer {
 
-	public static AnalyzerResult analyze(ObjectId idSession, byte[] image) {
+	public static AnalyzerResult analyze(int index, byte[] image) {
 		PageEnum pagePrecedente = getPagePrecedente();
 		PageEnum pageActuelle = getPageActuelle();
 		int nombreVisites = getNombreVisites();
