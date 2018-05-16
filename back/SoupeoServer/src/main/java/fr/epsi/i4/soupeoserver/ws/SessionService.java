@@ -7,7 +7,6 @@ import fr.epsi.i4.soupeoserver.utils.WebUtils;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,9 +33,11 @@ public class SessionService {
 
 	@GetMapping(basePath + "/start")
 	public String startSession() {
-		UserSession userSession = getUserSession();
-		userSession.end();
-		MainDAO.save(userSession);
+		UserSession userSession = getCurrentSession();
+		if (userSession != null) {
+			userSession.end();
+			MainDAO.save(userSession);
+		}
 		ObjectId id = MainDAO.save(new UserSession(WebUtils.getClientIp())).get_id();
 		return id.toHexString();
 	}
@@ -47,7 +48,7 @@ public class SessionService {
 		return WebUtils.getClientIp();
 	}
 
-	private UserSession getUserSession() {
-		return UserSessionDAO.getUserSessionByIp(WebUtils.getClientIp());
+	private UserSession getCurrentSession() {
+		return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
 	}
 }
