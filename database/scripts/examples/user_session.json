@@ -2,26 +2,26 @@
     {
         "id_terminal" : "adresse mac",
         "location": "Montpellier", 
-        "start_sessoin": ISODate("2013-11-20T23:32:18Z"), 
-        "end_session": ISODate("2013-11-20T23:37:18Z"),
+        "start_session": "2013-11-20T23:32:18Z", 
+        "end_session": "2013-11-20T23:37:18Z",
         "parcours": [ 
             {
-                "start": ISODate("2013-11-20T23:32:18Z"),
+                "start": "2013-11-20T23:32:18Z",
                 "url": "https://pole-emploi.fr",
                 "help_used": false,
-                "end": ISODate("2013-11-20T23:33:18Z")
+                "end": "2013-11-20T23:33:18Z"
             }
         ],
         "indice_pb": [
             {
                 "level": 0,
-                "date": ISODate("2013-11-20T23:32:18Z"),  
+                "date": "2013-11-20T23:32:18Z",  
                 "cause": "Nothing wrong"
             }
         ],
         "mood": [
             {
-                "date": ISODate("2013-11-20T23:32:18Z"), 
+                "date": "2013-11-20T23:32:18Z", 
                 "emotion": { 
                     "anger": 0,
                     "contempt": 0.01,

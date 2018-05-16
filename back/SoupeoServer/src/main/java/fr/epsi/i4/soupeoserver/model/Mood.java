@@ -1,35 +1,29 @@
 package fr.epsi.i4.soupeoserver.model;
 
-import org.mongodb.morphia.annotations.Embedded;
-
 import java.util.ArrayList;
-import java.util.Date;
 
-@Embedded
 class Mood {
 
-    private Date date;
-    @Embedded
-    private ArrayList<FaceAttributes> faceAttributes;
+	private String date;
 
-    Mood(Date date, ArrayList<FaceAttributes> faceAttributes) {
-        this.setDate(date);
-        this.setFaceAttributes(faceAttributes);
-    }
+	private ArrayList<FaceAttributes> faceAttributes;
 
-    protected Date getDate() {
-        return date;
-    }
+	public Mood() {
+	}
 
-    protected void setDate(Date date) {
-        this.date = date;
-    }
+	public String getDate() {
+		return date;
+	}
 
-    protected ArrayList<FaceAttributes> getFaceAttributes() {
-        return faceAttributes;
-    }
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-    protected void setFaceAttributes(ArrayList<FaceAttributes> faceAttributes) {
-        this.faceAttributes = faceAttributes;
-    }
+	public ArrayList<FaceAttributes> getFaceAttributes() {
+		return faceAttributes;
+	}
+
+	public void setFaceAttributes(ArrayList<FaceAttributes> faceAttributes) {
+		this.faceAttributes = faceAttributes;
+	}
 }
