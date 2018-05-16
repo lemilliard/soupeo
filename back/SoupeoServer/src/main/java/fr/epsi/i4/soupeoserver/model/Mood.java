@@ -9,6 +9,7 @@ import java.util.Date;
 class Mood {
 
     private Date date;
+    @Embedded
     private ArrayList<FaceAttributes> faceAttributes;
 
     Mood(Date date, ArrayList<FaceAttributes> faceAttributes) {

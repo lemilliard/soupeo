@@ -1,5 +1,6 @@
 package fr.epsi.i4.soupeoserver.model;
 
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -9,8 +10,7 @@ import java.util.Date;
 
 @Entity
 public class UserSession {
-    @Id
-    private int _id;
+    @Id private ObjectId _id;
     private String id_terminal;
 
     private String location;
