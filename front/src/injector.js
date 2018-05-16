@@ -42,7 +42,7 @@ $(function() {
             align-items: center;
             justify-content: space-around;
             flex-direction: column;
-            font-size: 36px;
+            font-size: 24px;
         }
 
         .buttonContainer{
@@ -60,6 +60,7 @@ $(function() {
             border: 2px solid rgba(0,0,0,0.2);
             margin-right: 5px;
             margin-left: 5px;
+            font-size: 36px;
         }
 
         .response:hover{
@@ -94,15 +95,21 @@ $(function() {
             }
           }
           
-          
-
 
         </style>
     `);
 
+
+    
+
+    let data = {
+        disconnect: true
+    }
+
     /* eslint-disable no-new */
     let vue = new Vue({
         el: "#injector",
+        data: data,
         render: h => h(Injector)
     });
 });

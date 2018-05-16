@@ -19,7 +19,7 @@
                 Si vous ne souhaitez pas parler, vous pouvez aussi écrire votre question ci-dessous :
                 <input type="text" :bind="question" placeholder="Ecrivez votre question" style="margin-top: 20px; background: rgba(0,0,0,0.05); border:none; font-size: 36px; width: 100%; height: 50px;"/>
                 <div class="buttonContainer">
-                    <div class="response" @click="closePopup">Envoyer</div>
+                    <div class="response" @click="sendQuestion">Envoyer</div>
                     <div class="response" @click="closePopup">Annuler</div>                                    
                 </div>
             </div>
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data(){
         return{
@@ -55,6 +57,14 @@ export default {
         askQuestion(){
             this.$emit('toggleGlow');
             this.continueScenario();            
+        },
+        sendQuestion(){
+            axios.post("http://192.168.137.22:8080/help", {
+                message: this.question,
+                index: index
+            }).then((data)=>{
+                this.$emit('injectPopup', data);
+            });
         }
 
     }

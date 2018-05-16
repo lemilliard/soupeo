@@ -1,6 +1,7 @@
 <template>
   <div class="mainPopup">
     <p>Extension pole emploi </p>
+    <input type="button" value="deconnexion" @click="deconnect"/>
   </div>
 </template>
 
@@ -10,6 +11,10 @@ export default {
     return {};
   },
   mounted(){
+  },
+  methods: {
+    deconnect(){
+    }
   }
 };
 </script>
@@ -22,6 +27,7 @@ p {
 .mainPopup{
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: center;
   width: 300px;
   height: 100px;

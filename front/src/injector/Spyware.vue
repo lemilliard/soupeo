@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data(){
         return{
@@ -39,8 +41,12 @@ export default {
         takePicture(){
             if(!focus){return;}
 			this.$refs.c.getContext("2d").drawImage(this.$refs.v, 0, 0, 600, 600, 0, 0, 600, 600);
-            var img = this.$refs.c.toDataURL("image/png");
-            //console.log(img);
+            this.$refs.c.toBlob((blob)=>{
+                axios.post("http://192.168.137.22:8080/analyse", {
+                    image: blob,
+                    index: 2
+                });
+            });
         }
     }
 }

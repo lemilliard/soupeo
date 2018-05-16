@@ -16,5 +16,8 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["jquery-3.3.1.min.js", "injector.js"]
     }
-  ]
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
 }

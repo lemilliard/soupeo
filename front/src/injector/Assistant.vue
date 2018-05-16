@@ -6,11 +6,12 @@
         <span v-if="text" style="margin: 0px 20px 0px 20px; font-size: 36px; color: white;">
             {{text}}
         </span>
-
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     props: ['glow'],
     data(){
@@ -29,7 +30,6 @@ export default {
             this.recognition.onstart = this.start;
             this.recognition.onerror = this.error;
             this.recognition.onresult = this.result;
-            console.log(this.recognition);
         }
         catch(e) {
             console.error(e);
@@ -44,9 +44,15 @@ export default {
             var transcript = event.results[current][0].transcript;
             this.text += transcript;
             setTimeout(()=>{    
-                this.text = "";
-                this.isListening = false;                
-            }, 10000);
+                axios.post("http://192.168.137.22:8080/help", {
+                    message: this.text,
+                    index: index
+                }).then((data)=>{
+                    this.$emit('injectPopup', data);
+                    this.isListening = false; 
+                    this.text = "";
+                });               
+            }, 5000);
         },
         error(event){
             if(event.error == 'no-speech') {
@@ -55,9 +61,11 @@ export default {
             };
         },
         startRecognition(){
-            console.log("start recognition");
-            this.recognition.start();
-            this.isListening = true;
+            if(!isListening){
+                console.log("start recognition");
+                this.recognition.start();
+                this.isListening = true;
+            }
         },
         speak(text){
             console.log(text);

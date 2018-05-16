@@ -10,6 +10,7 @@ const config = {
   mode: process.env.NODE_ENV,
   context: __dirname + '/src',
   entry: {
+    'background': './background.js',
     'injector': './injector.js',
     'popup/popup': './popup/popup.js',
   },
