@@ -8,8 +8,6 @@ class Parcours {
 	private String start;
 	private String url;
 	private boolean help_used;
-	private String end;
-	private int timeSpent;
 
 	public Parcours() {
 	}
@@ -36,32 +34,5 @@ class Parcours {
 
 	public void setHelp_used(boolean help_used) {
 		this.help_used = help_used;
-	}
-
-	public String getEnd() {
-		return end;
-	}
-
-	public void setEnd(String end) {
-		this.end = end;
-	}
-
-	public int getTimeSpent() {
-		return timeSpent;
-	}
-
-	public void setTimeSpent(int timeSpent) {
-		this.timeSpent = timeSpent;
-	}
-
-	@Override
-	public String toString() {
-		return "Parcours{" +
-				"start='" + start + '\'' +
-				", url='" + url + '\'' +
-				", help_used=" + help_used +
-				", end='" + end + '\'' +
-				", timeSpent=" + timeSpent +
-				'}';
 	}
 }

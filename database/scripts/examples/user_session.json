@@ -8,16 +8,12 @@
             {
                 "start": "2013-11-20T23:32:18Z",
                 "url": "https://pole-emploi.fr",
-                "help_used": false,
-                "end": "2013-11-20T23:33:18Z",
-                "timeSpent": 33
+                "help_used": false
             },
             {
                 "start": "2013-11-20T23:32:18Z",
                 "url": "https://pole-emploi.fr",
-                "help_used": false,
-                "end": null,
-                "timeSpent": null
+                "help_used": false
             }
         ],
         "indice_pb": [
@@ -30,6 +26,7 @@
         "mood": [
             {
                 "date": "2013-11-20T23:32:18Z", 
+				"url": "https://pole-emploi.fr",
                 "emotion": { 
                     "anger": 0,
                     "contempt": 0.01,

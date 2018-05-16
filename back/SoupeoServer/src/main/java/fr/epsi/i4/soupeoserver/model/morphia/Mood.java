@@ -1,12 +1,11 @@
 package fr.epsi.i4.soupeoserver.model.morphia;
 
-import fr.epsi.i4.soupeoserver.model.morphia.FaceAttributes;
-
 import java.util.ArrayList;
 
 class Mood {
 
 	private String date;
+	private String url;
 
 	private ArrayList<FaceAttributes> faceAttributes;
 
@@ -19,6 +18,14 @@ class Mood {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public ArrayList<FaceAttributes> getFaceAttributes() {
