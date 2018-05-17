@@ -65,11 +65,12 @@ public class AnalyseDecisionTree {
 
 		Result decision;
 		decision = decisionTree.decide(values);
-		System.out.println(decision.getValue());
-		System.out.println(decision.getRatio());
 
-		decisionTree.print();
+//		decisionTree.print();
 
-		return decision.getValue();
+		if (decision != null) {
+			return decision.getValue();
+		}
+		return OK.name();
 	}
 }
