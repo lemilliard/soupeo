@@ -103,7 +103,7 @@ public class Analyzer {
 					cpt = 0;
 					//déconnexion si > 2
                     if (cpt > 2 && !objectArray.isEmpty()) {
-
+                        endSession();
                     }
 				}
 				if (previousId != null) {
@@ -121,18 +121,15 @@ public class Analyzer {
 		return score;
 	}
 
-	public String endSession() {
+	public static String endSession() {
             UserSession userSession = getCurrentSession();
             if (userSession != null) {
                 userSession.end();
                 MainDAO.save(userSession);
             }
-            ObjectId id = MainDAO.save(new UserSession(WebUtils.getClientIp())).get_id();
-            System.out.println("StartSession: " + id.toHexString());
-            return id.toHexString();
     }
 
-    private UserSession getCurrentSession() {
+    private static UserSession getCurrentSession() {
         return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
     }
 }
