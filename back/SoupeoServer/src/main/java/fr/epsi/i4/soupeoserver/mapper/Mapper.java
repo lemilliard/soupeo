@@ -1,5 +1,6 @@
 package fr.epsi.i4.soupeoserver.mapper;
 
+import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,4 +41,15 @@ public class Mapper {
 	private static List<String> getWords(String str) {
 		return Arrays.asList(str.split(" "));
 	}
+        
+        public static PageEnum urlToPageEnum(String url){
+            if(url.contains("google")){
+                return PageEnum.PORTAIL;
+            } else if (url.contains("pole-emploi.fr/offres/recherche")){
+                return PageEnum.RECHERCHE_EMPLOI;
+            } else if (url.contains("pole-emploi.fr/formations/recherche")){
+                return PageEnum.RECHERCHE_FORMATION;
+            }
+            return null;
+        }
 }
