@@ -102,6 +102,9 @@ public class Analyzer {
 					previousId = face.getId();
 					cpt = 0;
 					//déconnexion si > 2
+                    if (cpt > 2 && !objectArray.isEmpty()) {
+
+                    }
 				}
 				if (previousId != null) {
 
