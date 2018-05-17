@@ -1,7 +1,6 @@
 <template>
   <div class="mainPopup">
     <p>Extension pole emploi </p>
-    <input type="button" value="deconnexion" @click="deconnect"/>
   </div>
 </template>
 
