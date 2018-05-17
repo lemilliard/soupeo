@@ -22,11 +22,13 @@ public class SessionService {
 	@GetMapping(basePath)
 	public List<UserSession> getAllSession() {
 		// Récupération de la session en base
+		System.out.println("GetAllSession");
 		return MainDAO.findAll(UserSession.class);
 	}
 
 	@GetMapping(basePath + "/{id}")
 	public UserSession getSession(@PathVariable("id") ObjectId id) {
+		System.out.println("GetSession: " + id.toHexString());
 		// Récupération de la session en base
 		return MainDAO.findById(UserSession.class, id);
 	}
@@ -39,12 +41,13 @@ public class SessionService {
 			MainDAO.save(userSession);
 		}
 		ObjectId id = MainDAO.save(new UserSession(WebUtils.getClientIp())).get_id();
+		System.out.println("StartSession: " + id.toHexString());
 		return id.toHexString();
 	}
 
 	@GetMapping("/test")
 	public String getIp() {
-		System.out.println("test " + WebUtils.getClientIp());
+		System.out.println("Test " + WebUtils.getClientIp());
 		return WebUtils.getClientIp();
 	}
 

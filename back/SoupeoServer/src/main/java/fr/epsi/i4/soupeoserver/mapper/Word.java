@@ -19,7 +19,7 @@ public enum Word {
 			"formation", "former"
 	))),
     MON_COMPTE("compte", WordType.PAGE, new ArrayList<>(Arrays.asList(
-			"compte", "compte personnel", "profil"
+			"compte", "comptes", "compte personnel", "comptes personnels", "profil"
 	))), 
     CV("cv", WordType.PAGE, new ArrayList<>(Arrays.asList(
 			"cv", "curriculum vitae", "curriculum"
@@ -45,7 +45,7 @@ public enum Word {
 			"comment", "quoi", "qu'est"
 	))),
 	DEVELOPPEUR("developpeur", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
-			"dev", "developpeur", "developpement"
+			"dev", "dave", "developpeur", "developpement"
 	))),
 	WEBMASTER("webmaster", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
 			"web", "master", "webmaster"
@@ -56,8 +56,8 @@ public enum Word {
 	MONTPELLIER("34172", WordType.VILLE, new ArrayList<>(Arrays.asList(
 			"montpellier"
 	))),
-	PARIS("75", WordType.VILLE, new ArrayList<>(Arrays.asList(
-			"paris"
+	PARIS("75D", WordType.VILLE, new ArrayList<>(Arrays.asList(
+			"paris", "paname", "capitale", "capitole", "capital", "capitol"
 	))),
 	MACONNERIE("22334", WordType.FORMATION, new ArrayList<>(Arrays.asList(
 			"maçon", "maçonnerie"
