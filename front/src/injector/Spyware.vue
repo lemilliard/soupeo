@@ -42,9 +42,11 @@ export default {
             if(!focus){return;}
 			this.$refs.c.getContext("2d").drawImage(this.$refs.v, 0, 0, 600, 600, 0, 0, 600, 600);
             this.$refs.c.toBlob((blob)=>{
-                axios.post("http://192.168.137.22:8080/analyse", {
-                    image: blob,
-                    index: 2
+                let data = new FormData();
+                data.append('index', 69);
+                data.append('image', blob);
+                axios.post('https://192.168.137.222:8443/analyse', data).then((data)=>{
+                    console.log(data);
                 });
             });
         }

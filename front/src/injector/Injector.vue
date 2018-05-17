@@ -35,11 +35,12 @@ export default {
   mounted(){
     this.interval = setInterval(this.incrementTime, 1000);
     window.addEventListener("beforeunload", this.destroy);
-    if(window.location.href == "http://azurons.com/"){
-      axios.get("http://192.168.137.222:8080/session/start");
+    if(window.location.href == "https://www.google.fr/"){
+      console.log("Send session start");
+      axios.get("https://192.168.137.222:8443/session/start");
     }
 
-    axios.post("http://192.168.137.222:8080/parcours/open", {
+    axios.post("https://192.168.137.222:8443/parcours/open", {
       url: window.location.href
     }).then((index)=>{
       this.index = index;
@@ -51,7 +52,7 @@ export default {
     },
     destroy(event){
       if(!this.pageCleanup){
-        axios.get("http://192.168.137.22:8080/test", {
+        axios.get("https://192.168.137.222:8443/test", {
           url: window.location.href 
         }).then(()=>{
           this.pageCleanup = true;

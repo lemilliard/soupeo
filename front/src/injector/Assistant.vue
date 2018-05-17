@@ -44,7 +44,7 @@ export default {
             var transcript = event.results[current][0].transcript;
             this.text += transcript;
             setTimeout(()=>{    
-                axios.post("http://192.168.137.22:8080/help", {
+                axios.post("https://192.168.137.222:8443/help", {
                     message: this.text,
                     index: index
                 }).then((data)=>{
@@ -67,12 +67,6 @@ export default {
                 this.isListening = true;
             }
         },
-        speak(text){
-            console.log(text);
-            var msg = new SpeechSynthesisUtterance(text);
-            msg.lang = "fr-FR"
-            window.speechSynthesis.speak(msg);
-        }
     }
 }
 </script>

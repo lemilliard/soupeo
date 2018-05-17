@@ -59,7 +59,7 @@ export default {
             this.continueScenario();            
         },
         sendQuestion(){
-            axios.post("http://192.168.137.22:8080/help", {
+            axios.post("https://192.168.1372:8443/help", {
                 message: this.question,
                 index: index
             }).then((data)=>{
