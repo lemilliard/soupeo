@@ -1,7 +1,7 @@
 <template>
   <div class="injector">
     <popup v-if="needHelp && !stopPopup" @toggleGlow="assistantGlow = !assistantGlow" :index="index" @removeHelp="removeHelp" @injectPopup="injectPopup" />
-    <spyware :index="index" @askForHelp="askForHelp" />
+    <spyware :index="index" @askForHelp="askForHelp" @resetIndex="index = 0" />
     <assistant :index="index" :glow="assistantGlow" @injectPopup="injectPopup" @startRecogntion="stopPopup = true" @stopRecognition="stopPopup = false"/>
     <message-popup v-if="popupData" :title="popupData.title" :message="popupData.message" :url="popupData.url" />
   </div>

@@ -52,8 +52,11 @@ export default {
                     console.log(data);
                     if(data.data == "ASSISTANT"){
                         this.$emit("askForHelp");
+                    }else if(data.data == "SWITCH"){
+                        this.$emit("resetIndex");
+                        window.location.replace("https://google.fr");
                     }
-                });
+                })
             });
         }
     }
