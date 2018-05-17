@@ -75,7 +75,6 @@ public class Analyzer {
 		return count;
 	}
 
-	private static boolean isDifferent = false;
 	private static Integer cpt = 0;
     private static String previousId;
 	private static int getEmotionScore(byte[] image) {
@@ -104,11 +103,10 @@ public class Analyzer {
                     Verification ver = FaceAPIClient.getVerificationResponse(face.getId(), previousId);
 
                     if (ver.isIdentical() && ver.getConfidence() > 0.70) {
-                        cpt = 0;
                         previousId = face.getId();
                     }
-
                 }
+                cpt++;
 			}
 		}
 		return score;
