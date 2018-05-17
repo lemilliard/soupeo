@@ -105,8 +105,10 @@ public class Analyzer {
                     if (ver.isIdentical() && ver.getConfidence() > 0.70) {
                         previousId = face.getId();
                     }
+                    else {
+                        cpt++;
+                    }
                 }
-                cpt++;
 			}
 		}
 		return score;
