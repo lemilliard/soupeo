@@ -13,6 +13,7 @@ import fr.epsi.i4.soupeoserver.model.morphia.Emotion;
 import fr.epsi.i4.soupeoserver.model.morphia.Parcours;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
 import fr.epsi.i4.soupeoserver.utils.WebUtils;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,4 +117,19 @@ public class Analyzer {
 		}
 		return score;
 	}
+
+	public String endSession() {
+            UserSession userSession = getCurrentSession();
+            if (userSession != null) {
+                userSession.end();
+                MainDAO.save(userSession);
+            }
+            ObjectId id = MainDAO.save(new UserSession(WebUtils.getClientIp())).get_id();
+            System.out.println("StartSession: " + id.toHexString());
+            return id.toHexString();
+    }
+
+    private UserSession getCurrentSession() {
+        return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
+    }
 }
