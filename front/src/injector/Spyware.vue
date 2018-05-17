@@ -16,6 +16,7 @@ export default {
             video: undefined,
             interval: undefined,
             focus: true,
+            tabFocus: true,
             time: 3000
         }
     },
@@ -40,7 +41,7 @@ export default {
     },
     methods: {
         takePicture(){
-            if(!focus){return;}
+            if(!focus || document.visibilityState !== 'visible'){return;}
 			this.$refs.c.getContext("2d").drawImage(this.$refs.v, 0, 0, 600, 600, 0, 0, 600, 600);
             this.$refs.c.toBlob((blob)=>{
                 let data = new FormData();
