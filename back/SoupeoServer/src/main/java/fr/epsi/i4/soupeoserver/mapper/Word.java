@@ -1,6 +1,5 @@
 package fr.epsi.i4.soupeoserver.mapper;
 
-import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,22 +8,22 @@ import java.util.Arrays;
  * @author Thomas Kint
  */
 public enum Word {
-    PORTAIL("portail", WordType.PAGE, new ArrayList<>(Arrays.asList(
-			"portail", "portal", "pourtail", "accueil"
+	PORTAIL("portail", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"portail", "portal", "pourtail", "accueil", "home", "page d'accueil"
 	))),
-    RECHERCHE_EMPLOI("emploi", WordType.PAGE, new ArrayList<>(Arrays.asList(
-			"emploi", "boulot", "job", "travail", "travaille"
-	))), 
-    RECHERCHE_FORMATION("formation", WordType.PAGE, new ArrayList<>(Arrays.asList(
+	RECHERCHE_EMPLOI("emploi", WordType.PAGE, new ArrayList<>(Arrays.asList(
+			"emploi", "boulot", "job", "travail", "travaille", "lampe"
+	))),
+	RECHERCHE_FORMATION("formation", WordType.PAGE, new ArrayList<>(Arrays.asList(
 			"formation", "former"
 	))),
-    MON_COMPTE("compte", WordType.PAGE, new ArrayList<>(Arrays.asList(
+	MON_COMPTE("compte", WordType.PAGE, new ArrayList<>(Arrays.asList(
 			"compte", "comptes", "compte personnel", "comptes personnels", "profil"
-	))), 
-    CV("cv", WordType.PAGE, new ArrayList<>(Arrays.asList(
+	))),
+	CV("cv", WordType.PAGE, new ArrayList<>(Arrays.asList(
 			"cv", "curriculum vitae", "curriculum"
 	))),
-    ASSISTANT("assistant", WordType.PAGE, new ArrayList<>(Arrays.asList(
+	ASSISTANT("assistant", WordType.PAGE, new ArrayList<>(Arrays.asList(
 			"assistant", "conseiller", "conseillé"
 	))),
 
@@ -35,7 +34,8 @@ public enum Word {
 			"creer", "créé", "faire", "ajouter"
 	))),
 	REDIRECTION("redirection", WordType.ACTION, new ArrayList<>(Arrays.asList(
-			"accéder", "aller", "rendre", "ouvrir", "consulter", "ouvre", "accède", "retourner", "chercher", "rechercher", "recherche", "cherche"
+			"acceder", "aller", "rendre", "ouvrir", "consulter", "ouvre", "accede", "retourner", "chercher", "rechercher", "recherche", "cherche",
+			"veux", "vouloir", "voudrais", "voudrai", "voulons", "voulez"
 	))),
 	CONTACTER("contacter", WordType.ACTION, new ArrayList<>(Arrays.asList(
 			"contacter", "appeler", "appelle", "contacte"
@@ -53,17 +53,34 @@ public enum Word {
 	CHEF_PROJET("chefProjet", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
 			"chef", "projet"
 	))),
+	RESTAURATION("restauration", WordType.EMPLOI, new ArrayList<>(Arrays.asList(
+			"restauration", "resto", "serveur", "esclave"
+	))),
+
 	MONTPELLIER("34172", WordType.VILLE, new ArrayList<>(Arrays.asList(
 			"montpellier"
 	))),
 	PARIS("75D", WordType.VILLE, new ArrayList<>(Arrays.asList(
 			"paris", "paname", "capitale", "capitole", "capital", "capitol"
 	))),
+	PERPIGNAN("66136", WordType.VILLE, new ArrayList<>(Arrays.asList(
+			"perpi", "perpignan"
+	))),
+	GUINGAMP("22070", WordType.VILLE, new ArrayList<>(Arrays.asList(
+			"guingamp"
+	))),
+
 	MACONNERIE("22334", WordType.FORMATION, new ArrayList<>(Arrays.asList(
 			"maçon", "maçonnerie"
 	))),
 	JAVA("30802", WordType.FORMATION, new ArrayList<>(Arrays.asList(
-			"java"
+			"java", "C#"
+	))),
+	JARDINAGE("15039", WordType.FORMATION, new ArrayList<>(Arrays.asList(
+			"jardinage", "jardinage", "sharp", "c#"
+	))),
+	RESTO("42746", WordType.FORMATION, new ArrayList<>(Arrays.asList(
+			"resto", "restauration"
 	)));
 
 	private String word;

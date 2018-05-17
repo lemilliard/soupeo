@@ -28,10 +28,12 @@ public class UserSession {
 
 	public UserSession() {
 		this.parcours = new ArrayList<>();
+		this.indice_pb = new ArrayList<>();
+		this.mood = new ArrayList<>();
 	}
 
 	public UserSession(String ipAddress) {
-		this.parcours = new ArrayList<>();
+		this();
 		this.id_terminal = ipAddress;
 		this.location = null;
 		this.start_session = DateUtils.getCurrentDate();

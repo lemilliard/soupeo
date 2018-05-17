@@ -1,13 +1,14 @@
 package fr.epsi.i4.soupeoserver.model.morphia;
 
-import java.util.ArrayList;
+import org.mongodb.morphia.annotations.Embedded;
 
-class Mood {
+@Embedded
+public class Mood {
 
 	private String date;
 	private String url;
 
-	private ArrayList<FaceAttributes> faceAttributes;
+	private Emotion emotion;
 
 	public Mood() {
 	}
@@ -28,11 +29,11 @@ class Mood {
 		this.url = url;
 	}
 
-	public ArrayList<FaceAttributes> getFaceAttributes() {
-		return faceAttributes;
+	public Emotion getEmotion() {
+		return emotion;
 	}
 
-	public void setFaceAttributes(ArrayList<FaceAttributes> faceAttributes) {
-		this.faceAttributes = faceAttributes;
+	public void setEmotion(Emotion emotion) {
+		this.emotion = emotion;
 	}
 }

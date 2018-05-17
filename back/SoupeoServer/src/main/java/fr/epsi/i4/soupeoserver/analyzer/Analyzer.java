@@ -2,11 +2,13 @@ package fr.epsi.i4.soupeoserver.analyzer;
 
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
+import fr.epsi.i4.soupeoserver.arduinoapi.ArduinoAPIClient;
 import fr.epsi.i4.soupeoserver.dao.MainDAO;
 import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.mapper.Mapper;
-import fr.epsi.i4.soupeoserver.model.Emotion;
+import fr.epsi.i4.soupeoserver.model.morphia.Emotion;
+import fr.epsi.i4.soupeoserver.model.morphia.Mood;
 import fr.epsi.i4.soupeoserver.model.morphia.Parcours;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
 import fr.epsi.i4.soupeoserver.utils.WebUtils;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTree;
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ARDUINO;
 import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ASSISTANT;
 import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.OK;
 
@@ -32,7 +35,9 @@ public class Analyzer {
 			PageEnum pagePrecedente = getPagePrecedente(index, userSession.getParcours());
 			PageEnum pageActuelle = getPageActuelle(index, userSession.getParcours());
 			int nombreVisites = getNombreVisites(index, userSession.getParcours());
-			int scoreEmotion = getEmotionScore(image);
+			int scoreEmotion = getEmotionScore(userSession, image);
+
+			System.out.println("ScoreEmotion: " + scoreEmotion);
 
 			String decision = analyseDecisionTree.analyze(pagePrecedente, pageActuelle, nombreVisites, scoreEmotion);
 
@@ -41,6 +46,8 @@ public class Analyzer {
 			if (result.equals(ASSISTANT)) {
 				userSession.getParcours().get(index).setHelp_used(true);
 				MainDAO.save(userSession);
+			} else if (result.equals(ARDUINO)) {
+				ArduinoAPIClient.alertArduino();
 			}
 		}
 
@@ -71,7 +78,7 @@ public class Analyzer {
 		return count;
 	}
 
-	private static int getEmotionScore(byte[] image) {
+	private static int getEmotionScore(UserSession userSession, byte[] image) {
 		Object faceAPIResponse = FaceAPIClient.getResponse(image);
 
 		int score = 0;
@@ -85,6 +92,10 @@ public class Analyzer {
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
 				score = emotion.calculateScore();
+				Mood mood = new Mood();
+				mood.setEmotion(emotion);
+				userSession.getMood().add(mood);
+				MainDAO.save(userSession);
 			}
 		}
 

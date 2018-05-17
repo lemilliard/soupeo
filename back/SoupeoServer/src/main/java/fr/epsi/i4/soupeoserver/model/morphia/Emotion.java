@@ -1,12 +1,14 @@
-package fr.epsi.i4.soupeoserver.model;
+package fr.epsi.i4.soupeoserver.model.morphia;
 
 import com.google.gson.internal.LinkedTreeMap;
+import org.mongodb.morphia.annotations.Embedded;
 
 import java.math.BigDecimal;
 
 /**
  * @author Thomas Kint
  */
+@Embedded
 public class Emotion {
 
 	private Double anger;
@@ -14,6 +16,9 @@ public class Emotion {
 	private Double disgust;
 
 	private Double fear;
+
+	public Emotion() {
+	}
 
 	public Emotion(Double anger, Double disgust, Double fear) {
 		this.anger = anger;
