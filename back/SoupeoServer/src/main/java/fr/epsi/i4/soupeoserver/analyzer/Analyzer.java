@@ -1,9 +1,10 @@
 package fr.epsi.i4.soupeoserver.analyzer;
 
 import com.google.gson.internal.LinkedTreeMap;
+//import com.sun.tools.javah.Gen;
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
-import fr.epsi.i4.soupeoserver.model.Emotion;
+import fr.epsi.i4.soupeoserver.model.apiModel.*;
 
 import java.util.ArrayList;
 
@@ -13,12 +14,14 @@ import fr.epsi.i4.soupeoserver.mapper.Mapper;
 import fr.epsi.i4.soupeoserver.model.morphia.Parcours;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
 import fr.epsi.i4.soupeoserver.utils.WebUtils;
+
 import java.util.List;
 
 /**
  * @author Thomas Kint
  */
 public class Analyzer {
+
 
 	public static AnalyzerResult analyze(int index, byte[] image) {
                 UserSession userSession = UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
@@ -56,6 +59,9 @@ public class Analyzer {
                 return count;
 	}
 
+	private static boolean isDifferent = false;
+	private static Integer cpt = 0;
+    private static String previousId;
 	private static int getEmotionScore(byte[] image) {
 		Object faceAPIResponse = FaceAPIClient.getResponse(image);
 
@@ -65,14 +71,31 @@ public class Analyzer {
 			ArrayList<LinkedTreeMap> objectArray = (ArrayList<LinkedTreeMap>) faceAPIResponse;
 
 			if (!objectArray.isEmpty()) {
+			    LinkedTreeMap faceId = (LinkedTreeMap) objectArray.get(0).get("faceId");
 				LinkedTreeMap faceAttributes = (LinkedTreeMap) objectArray.get(0).get("faceAttributes");
 				LinkedTreeMap emotionTreeMap = (LinkedTreeMap) faceAttributes.get("emotion");
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
+                Face face = Face.fromTreeMap(faceId);
 				score = emotion.calculateScore();
+                if (cpt == 0 || cpt > 2) {
+                    previousId = face.getId();
+                    cpt = 0;
+                    //déconnexion si > 2
+                }
+                if (previousId != null) {
+
+                    Verification ver = FaceAPIClient.getVerificationResponse(face.getId(), previousId);
+
+                    if (ver.isIdentical() && ver.getConfidence() > 0.70) {
+                        cpt = 0;
+                        previousId = face.getId();
+                    }
+
+                }
 			}
 		}
-
 		return score;
 	}
+
 }
