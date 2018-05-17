@@ -2,7 +2,6 @@ package fr.epsi.i4.soupeoserver.faceapi;
 
 import com.google.gson.Gson;
 import fr.epsi.i4.soupeoserver.model.apiModel.Verification;
-import javafx.scene.shape.VertexFormat;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -65,8 +64,7 @@ public class FaceAPIClient {
 	public static Verification getVerificationResponse(String currentId, String previousId) {
 		HttpClient httpclient = HttpClients.createDefault();
 
-		try
-		{
+		try {
 			URIBuilder builder = new URIBuilder(urlVerification);
 
 
@@ -75,29 +73,25 @@ public class FaceAPIClient {
 			request.setHeader("Content-Type", "application/json");
 			request.setHeader("Ocp-Apim-Subscription-Key", token);
 
-
 			// Request body
 			StringEntity reqEntity = new StringEntity("{\n" +
-					"    \"faceId1\":\""+currentId+"\",\n" +
-					"    \"faceId2\":\""+previousId+"\",\n" +
+					"    \"faceId1\":\"" + currentId + "\",\n" +
+					"    \"faceId2\":\"" + previousId + "\",\n" +
 					"}");
 			request.setEntity(reqEntity);
 
 			HttpResponse response = httpclient.execute(request);
 			HttpEntity entity = response.getEntity();
-			if (entity != null)
-			{
+			if (entity != null) {
 				Verification res;
-				System.out.println(EntityUtils.toString(entity));
 				String jsonString = EntityUtils.toString(entity).trim();
+				System.out.println(jsonString);
 				Gson gson = new Gson();
 				res = gson.fromJson(jsonString, Verification.class);
 				return res;
 			}
-		}
-		catch (Exception e)
-		{
-			System.out.println(e.getMessage());
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 
 		return null;

@@ -6,5 +6,6 @@ package fr.epsi.i4.soupeoserver.analyzer;
 public enum AnalyzerResult {
 	OK,
 	ARDUINO,
-	ASSISTANT
+	ASSISTANT,
+	SWITCH
 }
