@@ -42,7 +42,7 @@ public class Analyzer {
                     String url = parcours.get(index - 1).getUrl();
                     return Mapper.urlToPageEnum(url);
                 } 
-                return null;
+                return PageEnum.PORTAIL;
 	}
 
 	private static int getNombreVisites(int index, List<Parcours> parcours) {
