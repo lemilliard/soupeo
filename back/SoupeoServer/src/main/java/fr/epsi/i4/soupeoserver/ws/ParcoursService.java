@@ -28,6 +28,7 @@ public class ParcoursService {
 		userSession.getParcours().add(parcours);
 		MainDAO.save(userSession);
 
+		System.out.println("OpenParcours: " + newParcours.url + " -> " + (userSession.getParcours().size() - 1));
 		return userSession.getParcours().size() - 1;
 	}
 

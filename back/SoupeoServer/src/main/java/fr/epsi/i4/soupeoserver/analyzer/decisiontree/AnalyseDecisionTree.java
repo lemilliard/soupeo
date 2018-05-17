@@ -11,7 +11,7 @@ import fr.decisiontree.model.Result;
 
 import java.util.HashMap;
 
-import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ARDUINO;
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ASSISTANT;
 import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.OK;
 
 /**
@@ -43,7 +43,7 @@ public class AnalyseDecisionTree {
 		config.addAttribut("Cam", CamParams);
 
 		config.addDecision(OK.name());
-		config.addDecision(ARDUINO.name());
+		config.addDecision(ASSISTANT.name());
 
 		decisionTree = new DecisionTree(config);
 	}

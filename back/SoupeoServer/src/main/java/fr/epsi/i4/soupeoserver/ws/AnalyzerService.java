@@ -19,6 +19,8 @@ public class AnalyzerService {
 	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/analyse")
 	public AnalyzerResult runAnalyzer(@RequestParam("image") MultipartFile image, @RequestParam int index) throws IOException {
-		return Analyzer.analyze(index, image.getBytes());
+		AnalyzerResult result = Analyzer.analyze(index, image.getBytes());
+		System.out.println("Analyse: " + index + " -> " + result);
+		return result;
 	}
 }

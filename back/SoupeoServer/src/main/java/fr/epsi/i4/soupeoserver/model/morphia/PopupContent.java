@@ -8,20 +8,21 @@ import org.mongodb.morphia.annotations.Id;
 public class PopupContent {
 
 	@Id
-	private ObjectId id_popup;
+	private ObjectId _id;
+	private int id_popup;
 	private String title;
 	private String message;
-        private String url;
-        private String paramUrl;
+	private String url;
+	private String paramUrl;
 
 	public PopupContent() {
 	}
 
-	public ObjectId getId_popup() {
+	public int getId_popup() {
 		return id_popup;
 	}
 
-	public void setId_popup(ObjectId id_popup) {
+	public void setId_popup(int id_popup) {
 		this.id_popup = id_popup;
 	}
 
@@ -41,21 +42,21 @@ public class PopupContent {
 		this.message = message;
 	}
 
-        public String getUrl() {
-            return url;
-        }
+	public String getUrl() {
+		return url;
+	}
 
-        public void setUrl(String url) {
-            this.url = url;
-        }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-        public String getParamUrl() {
-            return paramUrl;
-        }
+	public String getParamUrl() {
+		return paramUrl;
+	}
 
-        public void setParamUrl(String paramUrl) {
-            this.paramUrl = paramUrl;
-        }
-        
-        
+	public void setParamUrl(String paramUrl) {
+		this.paramUrl = paramUrl;
+	}
+
+
 }
