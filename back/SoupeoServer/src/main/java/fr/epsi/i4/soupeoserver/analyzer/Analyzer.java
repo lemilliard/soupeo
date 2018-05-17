@@ -7,8 +7,9 @@ import fr.epsi.i4.soupeoserver.dao.MainDAO;
 import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.mapper.Mapper;
+import fr.epsi.i4.soupeoserver.model.apiModel.Face;
+import fr.epsi.i4.soupeoserver.model.apiModel.Verification;
 import fr.epsi.i4.soupeoserver.model.morphia.Emotion;
-import fr.epsi.i4.soupeoserver.model.morphia.Mood;
 import fr.epsi.i4.soupeoserver.model.morphia.Parcours;
 import fr.epsi.i4.soupeoserver.model.morphia.UserSession;
 import fr.epsi.i4.soupeoserver.utils.WebUtils;
@@ -17,14 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTree;
-import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ARDUINO;
-import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ASSISTANT;
-import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.OK;
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.*;
 
 /**
  * @author Thomas Kint
  */
 public class Analyzer {
+
+
+	private static Integer cpt = 0;
+	private static String previousId;
 
 	public static AnalyzerResult analyze(int index, byte[] image) {
 		AnalyzerResult result;
@@ -35,7 +38,7 @@ public class Analyzer {
 			PageEnum pagePrecedente = getPagePrecedente(index, userSession.getParcours());
 			PageEnum pageActuelle = getPageActuelle(index, userSession.getParcours());
 			int nombreVisites = getNombreVisites(index, userSession.getParcours());
-			int scoreEmotion = getEmotionScore(userSession, image);
+			int scoreEmotion = getEmotionScore(image);
 
 			System.out.println("ScoreEmotion: " + scoreEmotion);
 
@@ -78,7 +81,7 @@ public class Analyzer {
 		return count;
 	}
 
-	private static int getEmotionScore(UserSession userSession, byte[] image) {
+	private static int getEmotionScore(byte[] image) {
 		Object faceAPIResponse = FaceAPIClient.getResponse(image);
 
 		int score = 0;
@@ -87,18 +90,30 @@ public class Analyzer {
 			ArrayList<LinkedTreeMap> objectArray = (ArrayList<LinkedTreeMap>) faceAPIResponse;
 
 			if (!objectArray.isEmpty()) {
+				LinkedTreeMap faceId = (LinkedTreeMap) objectArray.get(0).get("faceId");
 				LinkedTreeMap faceAttributes = (LinkedTreeMap) objectArray.get(0).get("faceAttributes");
 				LinkedTreeMap emotionTreeMap = (LinkedTreeMap) faceAttributes.get("emotion");
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
+				Face face = Face.fromTreeMap(faceId);
 				score = emotion.calculateScore();
-				Mood mood = new Mood();
-				mood.setEmotion(emotion);
-				userSession.getMood().add(mood);
-				MainDAO.save(userSession);
+				if (cpt == 0 || cpt > 2) {
+					previousId = face.getId();
+					cpt = 0;
+					//déconnexion si > 2
+				}
+				if (previousId != null) {
+
+					Verification ver = FaceAPIClient.getVerificationResponse(face.getId(), previousId);
+
+					if (ver.isIdentical() && ver.getConfidence() > 0.70) {
+						previousId = face.getId();
+					} else {
+						cpt++;
+					}
+				}
 			}
 		}
-
 		return score;
 	}
 }
