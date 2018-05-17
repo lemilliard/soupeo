@@ -5,6 +5,7 @@
  */
 package fr.epsi.i4.soupeoserver.assistant;
 
+import fr.epsi.i4.soupeoserver.arduinoapi.ArduinoAPIClient;
 import fr.epsi.i4.soupeoserver.mapper.Mapper;
 import fr.epsi.i4.soupeoserver.mapper.Word;
 import fr.epsi.i4.soupeoserver.mapper.WordType;
@@ -49,10 +50,10 @@ public class AssistantVirtuel {
 			villeParam = ville.getWord();
 		}
 		int idPopup = resultAide(action, page);
-		PopupContent popup = null;
+		PopupContent popup;
 		popup = connection.getDatastore().find(PopupContent.class).field("id_popup").equal(idPopup).get();
 		if (popup == null) {
-			// Arduino
+			ArduinoAPIClient.alertArduino();
 			return null;
 		}
 		if (interrogatif != null) {

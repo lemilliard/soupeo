@@ -2,12 +2,10 @@ package fr.epsi.i4.soupeoserver.analyzer;
 
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
-import fr.epsi.i4.soupeoserver.arduinoapi.ArduinoAPIClient;
 import fr.epsi.i4.soupeoserver.dao.MainDAO;
 import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.mapper.Mapper;
-import fr.epsi.i4.soupeoserver.model.apiModel.Face;
 import fr.epsi.i4.soupeoserver.model.apiModel.Verification;
 import fr.epsi.i4.soupeoserver.model.morphia.Emotion;
 import fr.epsi.i4.soupeoserver.model.morphia.Parcours;
@@ -26,32 +24,34 @@ import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.*;
  */
 public class Analyzer {
 
-
 	private static Integer cpt = 0;
 	private static String previousId;
 
 	public static AnalyzerResult analyze(int index, byte[] image) {
 		AnalyzerResult result;
 		UserSession userSession = UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
-		if (userSession.getParcours().get(index).isHelp_used()) {
-			result = OK;
+		Object faceAPIResponse = FaceAPIClient.getResponse(image);
+		if (checkNewUser(faceAPIResponse, index)) {
+			result = SWITCH;
 		} else {
-			PageEnum pagePrecedente = getPagePrecedente(index, userSession.getParcours());
-			PageEnum pageActuelle = getPageActuelle(index, userSession.getParcours());
-			int nombreVisites = getNombreVisites(index, userSession.getParcours());
-			int scoreEmotion = getEmotionScore(image);
+			if (userSession.getParcours().get(index).isHelp_used()) {
+				result = OK;
+			} else {
+				PageEnum pagePrecedente = getPagePrecedente(index, userSession.getParcours());
+				PageEnum pageActuelle = getPageActuelle(index, userSession.getParcours());
+				int nombreVisites = getNombreVisites(index, userSession.getParcours());
+				int scoreEmotion = getEmotionScore(faceAPIResponse);
 
-			System.out.println("ScoreEmotion: " + scoreEmotion);
+				System.out.println("ScoreEmotion: " + scoreEmotion);
 
-			String decision = analyseDecisionTree.analyze(pagePrecedente, pageActuelle, nombreVisites, scoreEmotion);
+				String decision = analyseDecisionTree.analyze(pagePrecedente, pageActuelle, nombreVisites, scoreEmotion);
 
-			result = AnalyzerResult.valueOf(decision);
+				result = AnalyzerResult.valueOf(decision);
 
-			if (result.equals(ASSISTANT)) {
-				userSession.getParcours().get(index).setHelp_used(true);
-				MainDAO.save(userSession);
-			} else if (result.equals(ARDUINO)) {
-				ArduinoAPIClient.alertArduino();
+				if (result.equals(ASSISTANT)) {
+					userSession.getParcours().get(index).setHelp_used(true);
+					MainDAO.save(userSession);
+				}
 			}
 		}
 
@@ -82,54 +82,68 @@ public class Analyzer {
 		return count;
 	}
 
-	private static int getEmotionScore(byte[] image) {
-		Object faceAPIResponse = FaceAPIClient.getResponse(image);
+	private static boolean checkNewUser(Object faceAPIResponse, int index) {
+		if (faceAPIResponse instanceof ArrayList) {
+			ArrayList<LinkedTreeMap> objectArray = (ArrayList<LinkedTreeMap>) faceAPIResponse;
 
+			if (!objectArray.isEmpty()) {
+				String faceId = (String) objectArray.get(0).get("faceId");
+
+				if (previousId != null) {
+					Verification ver = FaceAPIClient.getVerificationResponse(faceId, previousId);
+					if (ver != null && ver.isIdentical() && ver.getConfidence() > 0.70) {
+						previousId = faceId;
+						cpt = 0;
+					} else {
+						cpt++;
+					}
+				} else {
+					previousId = faceId;
+				}
+				if (cpt > 2) {
+					endSession(index);
+					cpt = 0;
+					return true;
+				}
+			} else {
+				cpt++;
+			}
+		}
+		return false;
+	}
+
+	private static int getEmotionScore(Object faceAPIResponse) {
 		int score = 0;
 
 		if (faceAPIResponse instanceof ArrayList) {
 			ArrayList<LinkedTreeMap> objectArray = (ArrayList<LinkedTreeMap>) faceAPIResponse;
 
 			if (!objectArray.isEmpty()) {
-				LinkedTreeMap faceId = (LinkedTreeMap) objectArray.get(0).get("faceId");
 				LinkedTreeMap faceAttributes = (LinkedTreeMap) objectArray.get(0).get("faceAttributes");
 				LinkedTreeMap emotionTreeMap = (LinkedTreeMap) faceAttributes.get("emotion");
 
 				Emotion emotion = Emotion.fromTreeMap(emotionTreeMap);
-				Face face = Face.fromTreeMap(faceId);
 				score = emotion.calculateScore();
-				if (cpt == 0 || cpt > 2) {
-					previousId = face.getId();
-					cpt = 0;
-					//déconnexion si > 2
-                    if (cpt > 2 && !objectArray.isEmpty()) {
-                        endSession();
-                    }
-				}
-				if (previousId != null) {
-
-					Verification ver = FaceAPIClient.getVerificationResponse(face.getId(), previousId);
-
-					if (ver.isIdentical() && ver.getConfidence() > 0.70) {
-						previousId = face.getId();
-					} else {
-						cpt++;
-					}
-				}
 			}
 		}
 		return score;
 	}
 
-	public static String endSession() {
-            UserSession userSession = getCurrentSession();
-            if (userSession != null) {
-                userSession.end();
-                MainDAO.save(userSession);
-            }
-    }
+	public static void endSession(int index) {
+		UserSession userSession = getCurrentSession();
+		if (userSession != null) {
+			System.out.println("Closing session: " + userSession.get_id().toHexString());
+			userSession.end();
+			MainDAO.save(userSession);
+			Parcours current = userSession.getParcours().get(index);
+			UserSession newSession = new UserSession(WebUtils.getClientIp());
+			newSession.getParcours().add(current);
+			ObjectId id = MainDAO.save(newSession).get_id();
+			System.out.println("StartSession: " + id.toHexString());
+		}
+	}
 
-    private static UserSession getCurrentSession() {
-        return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
-    }
+	private static UserSession getCurrentSession() {
+		return UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
+	}
 }
