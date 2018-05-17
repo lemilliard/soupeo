@@ -16,10 +16,12 @@ export default {
     props: ['title', 'message', 'url'],
     mounted(){
         if(!this.title && this.url){
-           window.location.href = this.url;
+            console.error('REDIRECTION');
+            window.location.href = this.url;
         }
 
         if(this.title){
+            console.error('Afficher popup');
             var msg = new SpeechSynthesisUtterance(this.title);
             msg.lang = "fr-FR"
             window.speechSynthesis.speak(msg);

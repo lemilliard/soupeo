@@ -43,16 +43,29 @@ export default {
             var current = event.resultIndex;
             var transcript = event.results[current][0].transcript;
             this.text += transcript;
+            this.$emit('stopRecognition');            
             setTimeout(()=>{    
                 axios.post("https://192.168.137.222:8443/help", {
                     message: this.text,
-                    index: index
+                    index: this.index
                 }).then((data)=>{
-                    this.$emit('injectPopup', data);
-                    this.isListening = false; 
-                    this.text = "";
-                });               
-            }, 5000);
+                    if(!data.data){
+                        var msg = new SpeechSynthesisUtterance("Je ne comprend pas votre question. Nous appelons un assistant.");
+                        msg.lang = "fr-FR"
+                        window.speechSynthesis.speak(msg);
+                        this.isListening = false; 
+                        this.text = "";
+                    }else{
+                        this.$emit('injectPopup', data.data);
+                        this.isListening = false; 
+                        this.text = "";
+                    }
+                }).catch(()=>{
+                    var msg = new SpeechSynthesisUtterance("Une erreur c'est produite");
+                    msg.lang = "fr-FR"
+                    window.speechSynthesis.speak(msg);
+                });             
+            }, 3000);
         },
         error(event){
             if(event.error == 'no-speech') {
@@ -61,10 +74,11 @@ export default {
             };
         },
         startRecognition(){
-            if(!isListening){
+            if(!this.isListening){
                 console.log("start recognition");
                 this.recognition.start();
                 this.isListening = true;
+                this.$emit('startRecognition');
             }
         },
     }

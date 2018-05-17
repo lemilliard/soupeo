@@ -1,23 +1,23 @@
 <template>
-    <div v-if="needHelp" class="popupBackground">
+    <div class="popupBackground">
         <div class="popup">
-            <div class="popupHelp" v-if="index === 0">
+            <div class="popupHelp" v-if="indexPage === 0">
                 Vous avez besoin d'aide ?
                 <div class="buttonContainer">
                     <div class="response" @click="infoAboutAssistant">Oui</div>
                     <div class="response" @click="closePopup">Non</div>            
                 </div>
             </div>
-            <div class="popupHelp" v-if="index === 1">
+            <div class="popupHelp" v-if="indexPage === 1">
                 Notre assistant informatique peut comprendre votre problème. Cliqué en bas a droite de votre écran et formuler oralement votre question.
                 <div class="buttonContainer">
                     <div class="response" @click="askQuestion">Ok</div>        
                 </div>
             </div>
 
-            <div class="popupHelp" v-if="index === 2">
+            <div class="popupHelp" v-if="indexPage === 2">
                 Si vous ne souhaitez pas parler, vous pouvez aussi écrire votre question ci-dessous :
-                <input type="text" :bind="question" placeholder="Ecrivez votre question" style="margin-top: 20px; background: rgba(0,0,0,0.05); border:none; font-size: 36px; width: 100%; height: 50px;"/>
+                <input type="text" v-model="question" placeholder="Ecrivez votre question" style="margin-top: 20px; background: rgba(0,0,0,0.05); border:none; font-size: 36px; width: 100%; height: 50px;"/>
                 <div class="buttonContainer">
                     <div class="response" @click="sendQuestion">Envoyer</div>
                     <div class="response" @click="closePopup">Annuler</div>                                    
@@ -32,11 +32,11 @@
 import axios from 'axios';
 
 export default {
+    props: ['index'],
     data(){
         return{
-            needHelp: true,
-            index: 0,
-            question: undefined
+            indexPage: 0,
+            question: ""
         }
     },
     mounted(){
@@ -44,11 +44,12 @@ export default {
     },
     methods: {
         closePopup(){
-            this.needHelp = false;
             document.documentElement.style.overflow = 'auto';
+            this.indexPage = 0;
+            this.$emit('removeHelp');
         },
         continueScenario(){
-            this.index++;
+            this.indexPage++;
         },
         infoAboutAssistant(){
             this.$emit('toggleGlow');
@@ -59,11 +60,20 @@ export default {
             this.continueScenario();            
         },
         sendQuestion(){
-            axios.post("https://192.168.1372:8443/help", {
+            console.log(this.question);
+            axios.post("https://192.168.137.222:8443/help", {
                 message: this.question,
-                index: index
+                index: this.index
             }).then((data)=>{
-                this.$emit('injectPopup', data);
+                console.error('response from Server')
+                console.log(data.data);
+                this.$emit('injectPopup', data.data);
+                this.$emit('removeHelp');
+            }).catch(()=>{
+                var msg = new SpeechSynthesisUtterance("Une erreur c'est produite");
+                msg.lang = "fr-FR"
+                window.speechSynthesis.speak(msg);
+                this.$emit('removeHelp');                
             });
         }
 
