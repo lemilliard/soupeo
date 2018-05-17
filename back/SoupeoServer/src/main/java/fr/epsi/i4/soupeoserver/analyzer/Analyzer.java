@@ -2,6 +2,7 @@ package fr.epsi.i4.soupeoserver.analyzer;
 
 import com.google.gson.internal.LinkedTreeMap;
 import fr.epsi.i4.soupeoserver.analyzer.decisiontree.PageEnum;
+import fr.epsi.i4.soupeoserver.dao.MainDAO;
 import fr.epsi.i4.soupeoserver.dao.UserSessionDAO;
 import fr.epsi.i4.soupeoserver.faceapi.FaceAPIClient;
 import fr.epsi.i4.soupeoserver.mapper.Mapper;
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTree;
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.ASSISTANT;
+import static fr.epsi.i4.soupeoserver.analyzer.AnalyzerResult.OK;
 
 /**
  * @author Thomas Kint
@@ -21,15 +24,27 @@ import static fr.epsi.i4.soupeoserver.SoupeoServerApplication.analyseDecisionTre
 public class Analyzer {
 
 	public static AnalyzerResult analyze(int index, byte[] image) {
+		AnalyzerResult result;
 		UserSession userSession = UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
-		PageEnum pagePrecedente = getPagePrecedente(index, userSession.getParcours());
-		PageEnum pageActuelle = getPageActuelle(index, userSession.getParcours());
-		int nombreVisites = getNombreVisites(index, userSession.getParcours());
-		int scoreEmotion = getEmotionScore(image);
+		if (userSession.getParcours().get(index).isHelp_used()) {
+			result = OK;
+		} else {
+			PageEnum pagePrecedente = getPagePrecedente(index, userSession.getParcours());
+			PageEnum pageActuelle = getPageActuelle(index, userSession.getParcours());
+			int nombreVisites = getNombreVisites(index, userSession.getParcours());
+			int scoreEmotion = getEmotionScore(image);
 
-		String decision = analyseDecisionTree.analyze(pagePrecedente, pageActuelle, nombreVisites, scoreEmotion);
+			String decision = analyseDecisionTree.analyze(pagePrecedente, pageActuelle, nombreVisites, scoreEmotion);
 
-		return AnalyzerResult.valueOf(decision);
+			result = AnalyzerResult.valueOf(decision);
+
+			if (result.equals(ASSISTANT)) {
+				userSession.getParcours().get(index).setHelp_used(true);
+				MainDAO.save(userSession);
+			}
+		}
+
+		return result;
 	}
 
 	private static PageEnum getPageActuelle(int index, List<Parcours> parcours) {
