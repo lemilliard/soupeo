@@ -31,9 +31,9 @@ public class Analyzer {
 		AnalyzerResult result;
 		UserSession userSession = UserSessionDAO.getCurrentSession(WebUtils.getClientIp());
 		Object faceAPIResponse = FaceAPIClient.getResponse(image);
-		if (checkNewUser(faceAPIResponse, index)) {
-			result = SWITCH;
-		} else {
+//		if (checkNewUser(faceAPIResponse, index)) {
+//			result = SWITCH;
+//		} else {
 			if (userSession.getParcours().get(index).isHelp_used()) {
 				result = OK;
 			} else {
@@ -53,7 +53,7 @@ public class Analyzer {
 					MainDAO.save(userSession);
 				}
 			}
-		}
+//		}
 
 		return result;
 	}

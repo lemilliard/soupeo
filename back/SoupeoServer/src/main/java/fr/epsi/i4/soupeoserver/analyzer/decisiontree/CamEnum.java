@@ -11,8 +11,8 @@ package fr.epsi.i4.soupeoserver.analyzer.decisiontree;
  */
 public enum CamEnum {
     NORMAL(0),
-    ELEVE(40),
-    TRES_ELEVE(65);
+    ELEVE(10),
+    TRES_ELEVE(20);
 
     private int value;
 
